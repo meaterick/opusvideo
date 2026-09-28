@@ -171,3 +171,42 @@ Measured, not eyeballed:
 |---|---|---|
 | 814–818 | The cursor teleported from its rest (path point 3) to the path start at the top-left edge when the pass's anticipation began. The pass was measured from arc length 0. | The pass starts at the rest point's arc length: rest → 60 px pull-back → run, all continuous. |
 | 980–993 | On the MULTIPLY slam (16.348), fragments of "When the hard parts" showed between the hero's letters for 0.2 s. After the first fix one frame (980) still overlapped: the slam starts 20 ms before the onset so that it lands on it. | The line and its underline leave the moment the slam starts (onset − 20 ms); the echoes carry the depth. |
+
+Also reviewed and left as is:
+- **15.95 (frame 957):** the "p" shows at ~17 % because its reveal time falls inside the 3 ms shutter. That is correct motion blur of a stepped event, one frame.
+- **13.733 (frame 824):** the cursor passes behind the O during the pass. The path runs on the wall behind the letters, so the occlusion is correct depth.
+
+### Stage 4b — typography/motion test, final 4K render: measurements and scores
+
+`out/v2/test_type_master.mkv` (FFV1, 3840×2160, 300 frames), `test_type_review_1080p.mp4` and
+`test_type_4k.mp4`, re-rendered after the fixes above.
+
+Each event starts on the first frame whose centre is at or after its onset. The table shows the mean
+luma change into that frame, against ≤ 0.1 in the frames before it:
+
+| event | onset | frame | change |
+|---|---|---|---|
+| drafting starts on "sketch" | 11.900 | 714 | 0.28 (thin lines) |
+| L extrudes on "something" | 12.240 | 735 | 4.82 |
+| mint contour re-lights on "live" | 12.681 | 761 | 2.41 |
+| the cursor's pass on "pass" | 13.689 | 822 | 0.59 (a thin cursor) |
+| path straightens on "optimize" | 14.100 | 846 → 847 | 4.51 (a spring from rest at 846) |
+| cut to the document | 15.040 | 903 | 9.85, then 0.03 (no double exposure) |
+| MULTIPLY slam starts | 16.328 | 980 | 39.01 |
+
+Audio cross-correlation places the MP4's audio at song t = 11.8000 s. The stream is BT.709
+1080p60, 5.000 s video and 5.000 s audio. The 100 % crops (OPTIMIZE at 14.62, the document line at
+16.17) show clean bevels, contact shadows and optical kerning, with no bloom on the type.
+
+| category | score | why (and what keeps it from higher) |
+|---|---|---|
+| composition | 8 | One hero per beat: LIVE on its drawing wall, OPTIMIZE on the path with the counter as the only secondary, then the document line between ghosted fact rows. The weak spot is the transition frame at 15.00, which is nearly empty for a few frames (the underline carries it). |
+| typography | 8 | GPOS kerning, per-shot tracking, and the w100 → w75 width morph (the word condenses as it is optimized). Heroes run 140–380 px and lyrics 56 px. Annotations (`380`, `DWG-011`, the counter labels) are 30 px; the shot bible allows that only for micro detail, and these are the one place a strict reading of "≥ 48 px" would object. |
+| lyric integration | 9 | "sketch" is drawn and "something" extruded; "live" is re-lit; "one more pass" is the cursor's run over the kinked path; OPTIMIZE optimizes itself (loose to tight, 412 → 38 ms); the path becomes the underline of "hard parts" and breaks on "parts". |
+| motion | 8 | Anticipation before the pass, a critically damped straighten with letter overshoot, a stepped counter, a motivated whip and a sprung slam. The 14.3–14.75 hold is carried only by the counter's steps. |
+| musical sync | 9 | Every event above lands on its onset frame. |
+| storytelling | 8 | In 5 s: draft → live → iterate until optimal → the hard parts → multiply, with matter (the path and the underline) carried across the cut. |
+| originality | 8 | The latency counter on a kinked path and the drafting wall are specific to this song's lines rather than generic tech imagery. |
+| technical quality | 9 | Native 4K, adaptive 12–108 samples, a clean cut at 903, BT.709, and audio at 0 ms offset. |
+
+Both motion tests clear 8 in every category, so the full POC is rendered next.
