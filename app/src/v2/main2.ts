@@ -37,6 +37,11 @@ export function exposeV2(v: V2) {
       return eng.render(t, frame, { samples, shutter, fps });
     },
     probe() { return eng.lastProbe; },
+    /** Frame state a shot produces at t (debugging DoF / sample minimums). */
+    state(t: number) {
+      const f = (eng as any).evaluate(t);
+      return { dof: f.dof, minSamples: f.minSamples, cam: f.cam.position.toArray(), active: eng.active(t).map((s) => s.id), lastLens: eng.lastLens, lastSamples: eng.lastSamples };
+    },
     /** Every light in the world (debugging the lighting balance). */
     lights() {
       const out: string[] = [];

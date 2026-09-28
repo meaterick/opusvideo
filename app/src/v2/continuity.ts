@@ -4,7 +4,7 @@ import { layout } from './glyphs';
 import { Rig } from './rig';
 
 /** Shot 3's document line "When the hard parts": font, size and placement. */
-export const DOC = { font: 'sans100-500' as const, px: 140, left: Rig.col(2), baseline: 700 };
+export const DOC = { font: 'sans100-500' as const, px: 140, left: Rig.col(2), baseline: 734 };
 /** Gap between a text baseline and the line under it. */
 export const UNDERLINE_GAP = 26;
 
@@ -21,4 +21,4 @@ export function underlineSpan(text: string, fromWord: number) {
 }
 
 /** Shot 4 -> 5: the collapsed context window, a single vertical stroke. */
-export const STROKE = { x: 1180, top: 150, bottom: 930 };
+export const STROKE = { x: 420, top: 150, bottom: 930 };

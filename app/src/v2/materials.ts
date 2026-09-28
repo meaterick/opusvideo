@@ -70,7 +70,7 @@ export function graphite(color = COL.graphite, rough = 0.88) {
   return inject(new THREE.MeshStandardMaterial({ color: color.clone(), roughness: rough, metalness: 0.0, envMapIntensity: 0.12 }), { grain: 0.45, ao: 0.6, aoHeight: 0.6 });
 }
 export function porcelain(color = COL.porcelain) {
-  return inject(new THREE.MeshPhysicalMaterial({ color: color.clone(), roughness: 0.5, metalness: 0.0, envMapIntensity: 0.22, clearcoat: 0.55, clearcoatRoughness: 0.16 }), { wrap: 1, grain: 0.03, ao: 0.5, aoHeight: 0.25 });
+  return inject(new THREE.MeshPhysicalMaterial({ color: color.clone(), roughness: 0.5, metalness: 0.0, envMapIntensity: 0.22, clearcoat: 0.35, clearcoatRoughness: 0.24 }), { wrap: 1, grain: 0.03, ao: 0.5, aoHeight: 0.25 });
 }
 export function metal() {
   return inject(new THREE.MeshStandardMaterial({ color: COL.metal.clone(), roughness: 0.28, metalness: 1.0, envMapIntensity: 1.1 }), { grain: 0.08, ao: 0.4 });

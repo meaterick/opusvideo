@@ -292,7 +292,15 @@ export class WallShot extends Shot {
     const drawn = stepped(prog(t, tWhip1 - 0.08, tWhip1 + 0.34), 14); // arrives in machine steps
     const k = spring(t - tOpt, 26);                                    // straighten (critically damped)
     const ko = springOver(t - tOpt, 24, 0.55);                         // letters overshoot a touch
-    const pts = this.pathPts.map((p, i) => p.clone().lerp(this.straight[i], k));
+    // exit: the straight line contracts to the span that becomes the underline
+    // under "hard parts" in shot 3 (same screen position across the cut)
+    const contract = inOutCubic(prog(t, 14.72, 15.02));
+    const { sx0, sx1, lx0, lx1 } = this.span;
+    const pts = this.pathPts.map((p, i) => {
+      const q = p.clone().lerp(this.straight[i], k);
+      if (contract > 0) q.x = lerp(q.x, lerp(sx0, sx1, (q.x - lx0) / (lx1 - lx0)), contract);
+      return q;
+    });
     this.path.setPoints(pts);
     this.path.visible = pathOn;
     if (pathOn) this.path.draw(Math.max(0.0001, drawn));

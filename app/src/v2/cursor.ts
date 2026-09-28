@@ -34,9 +34,11 @@ export class Cursor2 extends THREE.Group {
     const k = p.notches ?? 0;
     this.notches.forEach((n, i) => {
       n.visible = i < k && (p.opacity ?? 1) > 0.5;
-      const nh = Math.max(w * 0.18, p.h * 0.012);
-      n.scale.set(w * 0.9, nh, w * 0.5);
-      n.position.set(w * 1.05, p.h / 2 - p.h * 0.14 - i * nh * 3.2, 0);
+      // fine ticks at any scale: thin, short, spaced by their own height
+      const nh = Math.min(w * 0.16, Math.max(0.012, p.h * 0.006));
+      const nw = Math.min(w * 0.7, nh * 5);
+      n.scale.set(nw, nh, Math.min(w * 0.5, nh * 3));
+      n.position.set(w / 2 + nw / 2 + nh * 0.8, p.h / 2 - p.h * 0.1 - i * nh * 3.5, 0);
       n.material.color.copy(c).multiplyScalar(0.45);
     });
     this.visible = (p.opacity ?? 1) > 0.01;

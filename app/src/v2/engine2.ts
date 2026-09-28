@@ -108,6 +108,7 @@ export class Engine2 {
   private fin: Pass;
   private probe = new Pass(probeFrag, { src: { value: null } });
   lastSamples = 0;
+  lastLens = 0; // largest lens offset used in the last frame (DoF check)
   lastProbe = 0;
   constructor(readonly canvas: HTMLCanvasElement, readonly m: Music, readonly shots: Shot[], W: number, H: number) {
     this.W = W; this.H = H;
@@ -118,7 +119,11 @@ export class Engine2 {
     this.renderer.toneMapping = THREE.NoToneMapping;
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFShadowMap;
-    this.renderer.autoClear = true;
+    // No autoClear: the accumulation pass must ADD each sample into accRT.
+    // (With autoClear, three clears the target before every pass, so the
+    // "average" silently became the last sample.)  Targets that need
+    // clearing are cleared explicitly.
+    this.renderer.autoClear = false;
     const lin = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, depthBuffer: false };
     this.sampleRT = new THREE.WebGLRenderTarget(W, H, { ...lin, type: THREE.HalfFloatType, depthBuffer: true });
     this.accRT = new THREE.WebGLRenderTarget(W, H, { ...lin, type: THREE.FloatType });
@@ -184,6 +189,7 @@ export class Engine2 {
       const fpx = (target.height / 2) / Math.tan((cam.fov * Math.PI) / 360);
       ox -= (lx * fpx) / f.dof.focus;
       oy += (ly * fpx) / f.dof.focus;
+      this.lastLens = Math.max(this.lastLens, Math.hypot(lx, ly));
     }
     if (jitter) { ox += halton(i + 1, 2) - 0.5; oy += halton(i + 1, 3) - 0.5; }
     cam.aspect = LW / LH;
@@ -226,6 +232,7 @@ export class Engine2 {
       n = Math.min(n, o.maxSamples ?? 108);
     } else n = Math.max(1, o.samples);
     this.lastSamples = n;
+    this.lastLens = 0;
     this.renderer.setRenderTarget(this.accRT);
     this.renderer.setClearColor(0x000000, 0);
     this.renderer.clear();
