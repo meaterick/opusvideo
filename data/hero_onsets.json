@@ -1,0 +1,195 @@
+{
+ "method": "peak of vocal-stem log-mel flux + 15 ms RMS rise within +-120 ms of the CTC start, refined to the steepest dB rise in the preceding 40 ms",
+ "words": [
+  {
+   "line": 6,
+   "word": 2,
+   "text": "sketch",
+   "ctc": 11.82,
+   "detected": 11.9,
+   "onset": 11.9,
+   "source": "detected",
+   "strength": 3.66
+  },
+  {
+   "line": 6,
+   "word": 4,
+   "text": "something",
+   "ctc": 12.24,
+   "detected": 12.115,
+   "onset": 12.24,
+   "source": "ctc (detected attack belongs to the previous word)",
+   "strength": 2.1
+  },
+  {
+   "line": 6,
+   "word": 5,
+   "text": "live",
+   "ctc": 12.68,
+   "detected": 12.681,
+   "onset": 12.681,
+   "source": "detected",
+   "strength": 0.77
+  },
+  {
+   "line": 7,
+   "word": 0,
+   "text": "One",
+   "ctc": 13.3,
+   "detected": 13.25,
+   "onset": 13.25,
+   "source": "detected",
+   "strength": 0.91
+  },
+  {
+   "line": 7,
+   "word": 2,
+   "text": "pass,",
+   "ctc": 13.68,
+   "detected": 13.689,
+   "onset": 13.689,
+   "source": "detected",
+   "strength": 2.43
+  },
+  {
+   "line": 7,
+   "word": 4,
+   "text": "optimize",
+   "ctc": 14.1,
+   "detected": 13.961,
+   "onset": 14.1,
+   "source": "ctc (detected attack belongs to the previous word)",
+   "strength": 1.55
+  },
+  {
+   "line": 8,
+   "word": 2,
+   "text": "hard",
+   "ctc": 15.5,
+   "detected": 15.427,
+   "onset": 15.427,
+   "source": "detected",
+   "strength": 0.41
+  },
+  {
+   "line": 8,
+   "word": 3,
+   "text": "parts",
+   "ctc": 15.94,
+   "detected": 15.951,
+   "onset": 15.951,
+   "source": "detected",
+   "strength": 2.89
+  },
+  {
+   "line": 8,
+   "word": 4,
+   "text": "multiply",
+   "ctc": 16.42,
+   "detected": 16.348,
+   "onset": 16.348,
+   "source": "detected",
+   "strength": 0.77
+  },
+  {
+   "line": 9,
+   "word": 2,
+   "text": "context,",
+   "ctc": 19.06,
+   "detected": 19.042,
+   "onset": 19.042,
+   "source": "detected",
+   "strength": 1.84
+  },
+  {
+   "line": 9,
+   "word": 5,
+   "text": "try",
+   "ctc": 20.54,
+   "detected": 20.491,
+   "onset": 20.491,
+   "source": "detected",
+   "strength": 0.88
+  },
+  {
+   "line": 10,
+   "word": 0,
+   "text": "Call",
+   "ctc": 23.62,
+   "detected": 23.611,
+   "onset": 23.611,
+   "source": "detected",
+   "strength": 0.68
+  },
+  {
+   "line": 10,
+   "word": 1,
+   "text": "in",
+   "ctc": 24.2,
+   "detected": 24.113,
+   "onset": 24.113,
+   "source": "detected",
+   "strength": 0.4
+  },
+  {
+   "line": 10,
+   "word": 2,
+   "text": "Opus",
+   "ctc": 24.52,
+   "detected": 24.417,
+   "onset": 24.417,
+   "source": "manual: vowel onset verified on spectrogram",
+   "strength": 0.77
+  },
+  {
+   "line": 11,
+   "word": 2,
+   "text": "difficult",
+   "ctc": 26.2,
+   "detected": 26.218,
+   "onset": 26.218,
+   "source": "detected",
+   "strength": 1.73
+  },
+  {
+   "line": 11,
+   "word": 4,
+   "text": "name",
+   "ctc": 27.1,
+   "detected": 27.086,
+   "onset": 27.086,
+   "source": "detected",
+   "strength": 0.68
+  },
+  {
+   "line": 12,
+   "word": 2,
+   "text": "reason,",
+   "ctc": 28.06,
+   "detected": 28.106,
+   "onset": 28.106,
+   "source": "detected",
+   "strength": 0.56
+  },
+  {
+   "line": 12,
+   "word": 3,
+   "text": "write,",
+   "ctc": 28.54,
+   "detected": 28.46,
+   "onset": 28.46,
+   "source": "detected",
+   "strength": 0.69
+  },
+  {
+   "line": 12,
+   "word": 5,
+   "text": "build",
+   "ctc": 29.02,
+   "detected": 29.027,
+   "onset": 29.027,
+   "source": "detected",
+   "strength": 1.12
+  }
+ ]
+}
