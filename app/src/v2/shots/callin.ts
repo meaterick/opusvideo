@@ -36,6 +36,8 @@ export class CallInShot extends Shot {
   private iBox = { x: 0, w: 0, cap: 0 };
   private emberLight = new THREE.PointLight(0xff6a3d, 0, 0, 2);
   private housing!: THREE.Mesh<THREE.BoxGeometry, THREE.MeshBasicMaterial>;
+  private callMat = porcelain();
+  private nMat = porcelain();
   constructor(m: Music, private c: Cues) { super(m); this.start = 23.611; this.end = 24.417; }
 
   build(_ctx: BuildCtx) {
@@ -55,7 +57,7 @@ export class CallInShot extends Shot {
     const capPx = ((1824 - (STROKE.x + 70)) / Lc.width) * fontOf(FONT).kern.capHeight;
     const baseCall = 836;
     this.floorY.call = rigC.y(baseCall);
-    this.call = new GlyphWord('CALL', FONT, rigC.px(capPx), porcelain(), { tracking: 24 }, { depth: 1.6, bevel: rigC.px(6) });
+    this.call = new GlyphWord('CALL', FONT, rigC.px(capPx), this.callMat, { tracking: 24 }, { depth: 1.6, bevel: rigC.px(6) });
     this.call.position.set(CALL_X + rigC.x(STROKE.x + 70), this.floorY.call, 0);
     g.add(this.call);
     floor.position.y = this.floorY.call - 0.001;
@@ -64,7 +66,7 @@ export class CallInShot extends Shot {
     const capI = rigI.px(900);
     const baseIn = 1010;
     this.floorY.in = rigI.y(baseIn);
-    this.n = new GlyphWord('IN', FONT, capI, porcelain(), { tracking: 10 }, { depth: 2.2, bevel: rigI.px(8) });
+    this.n = new GlyphWord('IN', FONT, capI, this.nMat, { tracking: 10 }, { depth: 2.2, bevel: rigI.px(8) });
     this.n.position.set(IN_X + rigI.x(STROKE.x) - this.n.centerX(0), this.floorY.in, 0);
     this.n.glyphs[0].visible = false; // the I is the cursor
     g.add(this.n);
@@ -95,8 +97,15 @@ export class CallInShot extends Shot {
     const flare = Math.exp(-Math.max(0, t - (isIn ? tIn : tCall)) / 0.08);
     const dim = outExpo(prog(t, stop, stop + 0.12));
     // the stage key dies with the band; the cursor becomes the light source
-    this.lighting.key.intensity = isIn ? 0.22 + 0.4 * flare : (1.6 + 1.0 * flare) * lerp(1, 0.12, dim);
+    this.lighting.key.intensity = isIn ? 0.22 + 0.4 * flare : (1.6 + 1.0 * flare) * lerp(1, 0.04, dim);
     this.lighting.fill.intensity = 0;
+    // the studio reflection dies with the key (it alone kept CALL at 93 %
+    // after the stop); what is left is the ember's steep falloff
+    this.callMat.envMapIntensity = lerp(0.22, 0.03, dim);
+    (this.callMat as THREE.MeshPhysicalMaterial).clearcoat = lerp(0.35, 0.2, dim);
+    this.callMat.userData.wrap.value = lerp(1, 0.1, dim);
+    this.nMat.envMapIntensity = 0.04;
+    this.nMat.userData.wrap.value = 0.15;
     this.lighting.rim.intensity = isIn ? 0.15 : 0.35;
     f.post.halation = 0.16;
     f.post.localContrast = 0.18;

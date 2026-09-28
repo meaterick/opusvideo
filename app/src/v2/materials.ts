@@ -40,12 +40,15 @@ function inject(mat: THREE.MeshStandardMaterial, opts: { wrap?: number; grain?: 
   // envMap).  At roughness >= 0.8 the PMREM lookup is effectively irradiance,
   // and in SwiftShader it was 2/3 of the per-sample cost on the big planes.
   if (opts.sh) mat.userData.envSH = true;
+  // wrap lift is a per-material uniform so a shot can take it away when the
+  // stage light dies (it is a constant lift, independent of the lights)
+  mat.userData.wrap = { value: opts.wrap ?? 0 };
   mat.onBeforeCompile = (sh) => {
     sh.uniforms.v2sh = shared.envSH;
     sh.uniforms.v2envK = { value: mat.envMapIntensity };
     sh.uniforms.groundY = shared.groundY;
     sh.uniforms.grainScale = shared.grainScale;
-    sh.uniforms.wrapAmt = { value: opts.wrap ?? 0 };
+    sh.uniforms.wrapAmt = mat.userData.wrap;
     sh.uniforms.grainAmt = { value: opts.grain ?? 0 };
     sh.uniforms.aoAmt = { value: opts.ao ?? 0.55 };
     sh.uniforms.aoHeight = { value: opts.aoHeight ?? 0.35 };
