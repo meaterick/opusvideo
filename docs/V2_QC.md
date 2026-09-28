@@ -135,6 +135,36 @@ light falls off across A-L-L into the dark: the cursor has become the light.
 | WRITE grew in under REASON before REASON had left (28.45 read as a glitch). | Each verb lands on its onset and has left before the next lands (exit inExpo ending 10 ms before the next onset). |
 | The name brackets and "a name" framed empty space for a frame after the word left. | They leave with the word. |
 
+### Stage 3e — chorus-impact test, final 4K render: measurements and scores
+
+`out/v2/test_chorus_master.mkv` (FFV1, 3840×2160, 300 frames), `test_chorus_review_1080p.mp4`
+(x264 CRF 12, ~109 Mb/s, AAC 320k) and `test_chorus_4k.mp4`, all re-rendered after the fixes above.
+Measured, not eyeballed:
+
+- **Cuts land on the vocal onsets.** Mean luma change between consecutive frames of the master
+  (96×54) is 46.5 into frame 1417 (CALL), 37.0 into 1447 (IN) and 70.7 into 1466 (OPUS). These are
+  exactly the first frames whose centre is at or after the measured onsets 23.611, 24.113 and
+  24.417. The two frames before each cut change by ≤ 0.1 (the stillness before impact is real).
+  The frame after changes by ≤ 1.4, so no frame shows two shots.
+- **Audio:** cross-correlation places the MP4's audio at song t = 23.2000 s, the clip's start.
+- **Stream:** 1920×1080p60 yuv420p with BT.709 primaries, transfer and matrix, limited range.
+  Duration 5.000 s video and 5.000 s audio.
+- **Samples:** 12 on the holds and 36–72 on ordinary motion; the fly-through through the O takes
+  72–108 (motion blur without stepping). Render cost ≈ 5–25 s per 4K frame.
+- **100 % crops** (1418 CALL, 1467 OPUS): clean bevel highlights and edges, and no bloom on the
+  white type. Halation appears only around the ember stroke.
+
+| category | score | why (and what keeps it from higher) |
+|---|---|---|
+| composition | 8 | Each impact is one dominant shape: CALL wide on the floor, IN cropped by the frame, OPUS full width. Then the O's counter becomes the frame of the reasoning space. The weak spot is the knot shot (25.2–25.8), where the cursor is a tiny accent far left of a centred knot. |
+| typography | 9 | Condensed w75 extruded heroes, each fitted to its shot. The serif italic *difficult* gives the only contrast of voice, and mono carries the code line. The hierarchy never competes. |
+| lyric integration | 9 | The collapsed context window becomes the stroke, and the stroke is the I of IN. The named word becomes the first code token, and the verbs land on the path they straighten. |
+| motion | 8 | 1.5 % impact recoil, a stepped close on 8ths, stillness before CALL, a lighting beat on the stop and a motivated fly-through. The P-U-S recoil at 24.80 barely reads from this camera. |
+| musical sync | 9 | Cuts measured on the onset frames. The stop (23.90) kills the light, the band's downbeat (24.582) opens the O, pulses step on the beat, and REASON lands on 28.106. |
+| storytelling | 8 | Context collapses into a cursor. The cursor becomes the light, then the I; OPUS reveals the system behind it; the difficult thing is named, then reasoned. |
+| originality | 8 | The cursor-as-light and the fly-through the O are specific to this song. The tangle-of-paths image of "reasoning" is the most familiar idea in the test. |
+| technical quality | 9 | Native 4K, adaptive 12–108 samples, cut-aware shutter, deterministic frames, BT.709 end to end, audio at 0 ms offset. |
+
 ## Stage 4 — typography/motion test, 4K (11.80–16.80)
 
 | frames | defect | fix |
