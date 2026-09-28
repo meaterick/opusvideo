@@ -208,16 +208,33 @@ export class Engine2 {
   private motion(t: number, shutterSec: number) {
     const px: Uint8Array[] = [];
     for (const dt of [-shutterSec / 2, shutterSec / 2]) {
-      this.sample(t + dt, 0, 1, 0, this.probeRT, false);
+      this.sample(this.sameSide(t, t + dt), 0, 1, 0, this.probeRT, false);
       this.probe.u.src.value = this.probeRT.texture;
       this.probe.run(this.renderer, this.probeOut);
       const b = new Uint8Array(this.probeOut.width * this.probeOut.height * 4);
       this.renderer.readRenderTargetPixels(this.probeOut, 0, 0, this.probeOut.width, this.probeOut.height, b);
       px.push(b);
     }
-    let s = 0;
-    for (let k = 0; k < px[0].length; k += 4) s += Math.abs(px[0][k] - px[1][k]) * 0.2126 + Math.abs(px[0][k + 1] - px[1][k + 1]) * 0.7152 + Math.abs(px[0][k + 2] - px[1][k + 2]) * 0.0722;
+    let s = 0, peak = 0;
+    for (let k = 0; k < px[0].length; k += 4) {
+      const d = Math.abs(px[0][k] - px[1][k]) * 0.2126 + Math.abs(px[0][k + 1] - px[1][k + 1]) * 0.7152 + Math.abs(px[0][k + 2] - px[1][k + 2]) * 0.0722;
+      s += d; if (d > peak) peak = d;
+    }
+    this.lastPeak = peak;
     return s / (px[0].length / 4);
+  }
+  lastPeak = 0;
+
+  /** Shot boundaries are hard cuts: a shutter sample never crosses one, so
+   *  a frame on a cut shows one shot, never a double exposure of both. */
+  private cuts: number[] | null = null;
+  private sameSide(t: number, ts: number) {
+    this.cuts ??= [...new Set(this.shots.flatMap((s) => [s.start, s.end]))].sort((a, b) => a - b);
+    for (const c of this.cuts) {
+      if (ts < t && ts < c && c <= t) ts = c;
+      else if (ts > t && t < c && c <= ts) ts = c - 1e-5;
+    }
+    return ts;
   }
 
   /** Render the frame for song time t (and frame number for seeding). */
@@ -229,6 +246,9 @@ export class Engine2 {
       const d = this.motion(t, shutterSec);
       this.lastProbe = d;
       n = d < 0.25 ? 12 : d < 1.2 ? 36 : d < 3.5 ? 72 : 108;
+      // a small object moving fast (the cursor on a snap) barely moves the
+      // mean but ghosts at 12 samples: the peak per-pixel change also counts
+      if (this.lastPeak > 96) n = Math.max(n, 72); else if (this.lastPeak > 40) n = Math.max(n, 36);
       n = Math.max(n, o.minSamples ?? 12, fProbe.minSamples);
       n = Math.min(n, o.maxSamples ?? 108);
     } else n = Math.max(1, o.samples);
@@ -241,7 +261,7 @@ export class Engine2 {
     for (let i = 0; i < n; i++) {
       // stratified time inside the shutter, jittered by a seeded hash
       const u = n === 1 ? 0.5 : (i + hash2(frame, i)) / n;
-      const f = this.sample(t + (u - 0.5) * shutterSec * (n === 1 ? 0 : 1), i, n, frame, this.sampleRT, n > 1);
+      const f = this.sample(this.sameSide(t, t + (u - 0.5) * shutterSec * (n === 1 ? 0 : 1)), i, n, frame, this.sampleRT, n > 1);
       if (i === (n >> 1)) post = f.post;
       this.accum.u.src.value = this.sampleRT.texture;
       this.accum.u.w.value = 1 / n; // accRT holds the mean (alpha sums to 1)

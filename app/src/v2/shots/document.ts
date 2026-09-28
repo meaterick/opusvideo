@@ -211,11 +211,16 @@ export class DocumentShot extends Shot {
     const mat = new THREE.Matrix4(), q = new THREE.Quaternion(), s = new THREE.Vector3(), p = new THREE.Vector3();
     const col = new THREE.Color();
     // build: rails close on every 8th note from the band's return
-    const eighths = Math.max(0, Math.floor((m.beat(t) - m.beat(tBuild)) * 2) + 1);
-    const total = Math.floor((m.beat(tCollapse) - m.beat(tBuild)) * 2);
-    const stepT = m.beatTime(Math.floor(m.beat(t) * 2) / 2);
-    const within = inExpo(clamp01((t - stepT) / (m.P / 2) * 1.4));
-    const closeU = t < tBuild ? 0 : clamp01((Math.min(eighths, total) - 1 + within) / total);
+    // Steps and the ease inside each step share one grid: the 8th notes
+    // from the first one at/after tBuild.  (Counting steps from tBuild but
+    // easing on the absolute half-beat grid made closeU run backwards on
+    // every step: the window re-opened and the cursor double-exposed.)
+    const k0 = Math.ceil(m.beat(tBuild) * 2 - 1e-6) / 2;
+    const hb = (m.beat(t) - k0) * 2;
+    const eighths = hb < 0 ? 0 : Math.floor(hb) + 1;
+    const total = Math.max(1, Math.floor((m.beat(tCollapse) - k0) * 2));
+    const within = hb < 0 ? 0 : inExpo(clamp01((hb - Math.floor(hb)) * 1.4));
+    const closeU = t < tBuild ? 0 : clamp01((Math.min(eighths, total) - 1 + (eighths > total ? 1 : within)) / total);
     const closeE = inExpo(closeU) * 0.35 + closeU * 0.65;
     const xL = lerp(rig.x(WIN.left), rig.x(STROKE.x), closeE), xR = lerp(rig.x(WIN.right), rig.x(STROKE.x), closeE);
     for (let layer = 0; layer <= LAYERS; layer++) {
@@ -282,7 +287,10 @@ export class DocumentShot extends Shot {
     this.tick.visible = t > tTry && closeU < 0.3;
     this.tick.position.set(this.tryLine.position.x + caretAfter(this.tryLine, this.tryLine.glyphs.length - 1) + rig.px(24), this.tryLine.position.y + rig.px(20), 0.32);
     // the stroke: at the end of the build the rails are one ember line
-    const merge = outExpo(prog(t, tCollapse - 0.2, tCollapse - 0.05));
+    // lit only once the rails have met (the last 8th's ease is done), so the
+    // stroke never shows beside a still-open window
+    const tClosed = m.beatTime(k0 + (total - 1) / 2) + (m.P / 2) / 1.4;
+    const merge = outExpo(prog(t, tClosed, tClosed + 0.08));
     this.stroke.visible = merge > 0.001;
     this.stroke.scale.set(rig.px(12), rig.y(STROKE.top) - rig.y(STROKE.bottom), 1);
     this.stroke.position.set(rig.x(STROKE.x), (rig.y(STROKE.top) + rig.y(STROKE.bottom)) / 2, 0.05);
@@ -310,7 +318,7 @@ export class DocumentShot extends Shot {
       this.cursor.pose({ x, y: this.tryLine.position.y + rig.px(20) + ty, z: 0.35, h: rig.px(60), notches: 3, opacity: t > tLet ? (ly === this.tryLine.glyphs.length - 1 && t > tTry + 0.3 ? blink2(bp) : 1) : blink2(bp) });
     } else {
       // pulled along by the closing window; becomes the stroke
-      const x = lerp(xR - rig.px(30), rig.x(STROKE.x), closeE);
+      const x = xR - rig.px(30) * (1 - closeE); // rides the right rail, pulling the window shut
       this.cursor.pose({ x, y: rig.y(540), z: 0.35, h: lerp(rig.px(60), rig.px(780), inExpo(closeU)), w: rig.px(12), notches: 3, opacity: merge > 0.9 ? 0 : 1 });
     }
     f.post.halation = 0.13;

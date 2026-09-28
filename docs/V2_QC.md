@@ -96,3 +96,17 @@ cores, so running segments in parallel could not help.
 
 Net effect: 4K native at the mandated sample counts is affordable, so the motion tests and the
 POC render at 3840×2160 and no 1080 fallback is needed.
+
+## Stage 3 — chorus-impact test, first 4K segment (23.20–23.70)
+
+The review was done frame by frame (every 2nd frame tiled at 1/3 scale, suspect frames at 100 %).
+
+| frames | defect | cause | fix |
+|---|---|---|---|
+| 1392–1414 | The last CONTEXT letter and its rails **strobe**: visible, gone, visible, gone. | The 8th-note steps counted from `tBuild`, but the ease inside each step ran on the absolute half-beat grid. The two are offset, so `closeU` ran backwards on every step and the window re-opened. | Steps and ease share one grid (8ths from the first one at or after `tBuild`); `closeU` is monotonic. |
+| 1402 | Two ember strokes. | The final stroke faded in 0.2 s before the rails reached it, and the cursor was lerped twice, landing ahead of the rails and over the O. | The stroke lights only once the last step's ease completes. The cursor rides the right rail, pulling the window shut. |
+| 1465 (latent) | The OPUS cut (24.417) falls inside frame 1465's shutter, which would double-expose two shots. | Shutter samples ignored cuts. | Samples and the motion probe are clamped to the frame centre's side of every shot boundary. |
+| any | A thin fast mover (a cursor snap) got 12 samples and ghosted. | The probe used mean luma change over the whole frame. | The probe also takes the peak per-pixel change: > 40 → ≥ 36 samples, > 96 → ≥ 72. |
+
+After the fix the sequence reads: the O between rails, with the cursor on the right rail; one snap
+into the single stroke on the 8th at 23.40; 0.2 s of stillness; CALL on its onset (23.611).
