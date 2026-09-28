@@ -222,8 +222,82 @@ at 960 px / 8 samples and reviewed every 4th frame.
 | 21.0–23.3 | A CONTEXT letter's right half crossed the right rail until the letter's centre reached it (the T's crossbar at 22.9). | The rails squeeze the letters: once a rail enters a letter, the letter is compressed against it, anchored at its far edge, and never drawn past it. The window visibly crushes CONTEXT down to "CON". |
 | 21.4 | The left rail passed over the "G" of "Give it" and the "l" of "let it try". | The rail wipes each line away as it reaches it. |
 | 18.50 (frame 1110) | Seen in the 4K POC render: the layer counter read "×38" because the ×16 → ×32 step (18.5 s) fell inside the 3 ms shutter, and the two numerals blended. (A check of every other stepped counter found only this one step inside a shutter.) | Frames now carry the time they stand for (`F2.tf`, their shutter centre). Discrete graphics (both counters) choose their state from it, so a step lands on a frame boundary and never blends. |
-
-Cross-run determinism: frames 720, 800, 870, 950, 980 and 985 of the POC render are bit-identical
-(SHA-256 of the RGB pixels) to the same frames of the typography test, which was rendered hours earlier
-in a different browser process.
 | 23.40–23.55 (frames 1404–1413) | Seen in the 4K POC render: after the window closed, a squeezed sliver of a letter stayed beside the stroke. The squeeze only handled one rail per letter, and with both rails inside the same pen box the glyph kept half its width. | A letter's pen box is clamped to the window [xL, xR] and the glyph compressed into the remainder. One-rail cases are unchanged (bit-identical); a closed window leaves nothing. |
+
+## Stage 6 — the V2 POC (11.033–29.958), 4K, final
+
+| file | what |
+|---|---|
+| `out/v2/poc_master.mkv` | lossless master: FFV1, 3840×2160, 60 fps, 1 135 frames (5.1 GB, not in git) |
+| `out/v2/poc_review_1080p.mp4` | review: Lanczos to 1080p, grain after downsampling, BT.709, x264 CRF 12 (~106 Mb/s), AAC 320k |
+| `out/v2/poc_4k.mp4` | 4K delivery encode: x264 CRF 12 (724 MB) |
+| `docs/poc/v2_poc_preview.mp4` | sharing copy: the review re-encoded two-pass at 11 Mb/s (26.7 MB); a side-by-side crop of a dark frame shows no blocking |
+
+**Render.** 38 segments of 30 frames. Samples per frame: 12 ×464, 36 ×163, 72 ×490, 108 ×18 (mean
+42.9, 48 660 samples in total). 3.3 h of rendering at a mean 10.5 s per 4K frame. Two defects were
+found in this render and fixed before the affected segments were re-rendered: the blended counter
+(18.50) and the sliver after the window closed (23.40–23.55), both in the Stage 5 table.
+
+**Sync, measured from the master.** Each event's first frame is the first frame whose centre is at or
+after its onset. The table shows the mean luma change (96×54) into that frame, then into the two frames
+before it:
+
+| event | onset | frame | change | before |
+|---|---|---|---|---|
+| drafting on "sketch" | 11.900 | 714 | 0.28 | 0.08 0.09 |
+| L extrudes on "something" | 12.240 | 735 | 4.82 | 0.07 0.07 |
+| mint re-light on "live" | 12.681 | 761 | 2.41 | 0.67 0.06 |
+| the pass on "pass" | 13.689 | 822 | 0.59 | 0.05 0.10 |
+| straighten on "optimize" (spring from rest at 846) | 14.100 | 847 | 4.51 | 0.09 0.06 |
+| cut: wall → document | 15.040 | 903 | 9.85 | 0.05 0.06 |
+| MULTIPLY slam starts (lands on 16.348) | 16.328 | 980 | 39.01 | 0.04 0.05 |
+| CONTEXT slam starts, out of the fold | 19.022 | 1142 | 37.84 | 18.38 14.40 |
+| tick on "try" | 20.491 | 1230 | 0.39 | 0.05 0.05 |
+| window closes into the stroke | 23.400 | 1404 | 7.57 | 7.76 3.78 |
+| cut: CALL | 23.611 | 1417 | 46.52 | 0.04 0.03 |
+| band stop: the stage light dies (0.12 s ramp) | 23.900 | 1434 | 0.25 | 0.07 0.09 |
+| cut: IN | 24.113 | 1447 | 37.04 | 0.06 0.06 |
+| cut: OPUS | 24.417 | 1466 | 70.67 | 0.11 0.11 |
+| band downbeat: the O opens | 24.582 | 1475 | 1.30 | 0.13 0.15 |
+| *difficult* arrives | 26.198 | 1572 | 5.45 | 0.19 0.19 |
+| brackets lock on "name" | 27.066 | 1624 | 0.51 | 0.16 0.43 |
+| REASON lands (after *difficult*'s pull) | 28.106 | 1687 | 6.45 | 6.58 6.90 |
+| WRITE lands (after REASON's exit) | 28.460 | 1708 | 17.16 | 23.03 13.19 |
+| BUILD lands (after WRITE's exit) | 29.027 | 1742 | 15.02 | 18.04 9.11 |
+
+Where "before" is non-zero, the preceding motion is the designed anticipation: the fold, the rail
+steps, or the previous word leaving.
+
+**Audio.** Cross-correlation against the song places the MP4's audio at t = 11.0330 s at the clip's
+head and at t = 20.4080 s 9.375 s in (expected 11.0330 / 20.4080), so there is no offset and no drift.
+The video is 1 135 frames = 18.917 s at 60 fps, 1080p yuv420p, BT.709 primaries, transfer and matrix,
+limited range. The audio is 18.925 s: the song's own span of the POC, 8 ms past the last frame's start.
+
+**Determinism.** Frames of the POC are bit-identical (SHA-256 of the RGB pixels) to the same frames
+rendered in other processes, hours apart:
+
+- 720, 800, 870, 950, 980 and 985 against the typography test;
+- 1430, 1440, 1447, 1455, 1466, 1665, 1675 and 1681 against the chorus test;
+- 1332 against a still re-rendered with the final code.
+
+Frame 1417 differs from the chorus test in 34 of 8.3 M pixels (≤ 4 levels, all on the letters'
+contact line with the floor). That test frame predates the CALL lighting change. Creating CALL's
+material earlier changed its material id, and so the draw order of coplanar surfaces (the letters'
+bottom faces on the floor plane). It is a code change, not non-determinism.
+
+**Review.** Every 6th frame of the whole POC was reviewed as a sheet, and every range was reviewed frame
+by frame in the tests or the low-res preview (Stages 3–5). The 4K segments new to this render (the fold
+at 18.5–19.0, the squeeze at 21.0–23.5 and BUILD at 29.0–29.5) were reviewed every 2nd frame.
+
+| category | score | why (and what keeps it from higher) |
+|---|---|---|
+| composition | 8 | One dominant shape per beat, with the frame organised around it: the drawing wall, the path, the document line, the stack, the window, CALL on its floor, IN cropped, OPUS full width, the O as a doorway, the knot, and the machine at 3/4. The weak spots are the tiny cursor beside a centred knot (25.2–25.8) and the long, nearly fixed MULTIPLY frame while the layers double (16.9–18.2). |
+| typography | 8 | GPOS-kerned outline type throughout, the w100 → w75 morph on "optimize", and letters squeezed glyph by glyph by the closing window. The one serif italic is the named word. The micro annotations are 30 px, and exiting verbs cross "It can" for 1–3 frames. |
+| lyric integration | 9 | Every line becomes the image: the sketch is drawn, "live" is lit, the pass is run, OPTIMIZE optimizes itself, the underline breaks on "parts", layers multiply, the window squeezes the context, CALL/IN/OPUS are objects and light, and the difficult thing is named, then becomes the code the machine is built from. |
+| motion | 8 | One consistent grammar: anticipation, stepped closes on 8ths, critically damped settles, sprung slams, motivated camera moves only (the whip, the rise, the fly-through, the crane), and stillness before each chorus impact. The held note (16.9–18.2) moves slowly, and the P-U-S recoil barely reads. |
+| musical sync | 9 | All 20 events above land on their onset frames, the rails and the reasoning pulses step on the beat grid, the band stop is a lighting beat, and the audio sits at 0 ms offset with no drift. |
+| storytelling | 9 | One recurring motif gains capability: the cursor is the drafting pen, then the pass, the underline's caret and the context window's edge. It collapses into the stroke, becomes the light, then the I of IN, is found again through the O, and ends as the spine of the verified machine. Matter crosses every cut: the path becomes the underline, the window the stroke, the stroke the I. |
+| originality | 8 | The concrete metaphors (a latency counter on a kinked path, a window that crushes its own context, a cursor that becomes the stage light) are specific to this song. The tangle-of-paths image of reasoning is the most familiar idea in it. |
+| technical quality | 9 | Native 4K at a mean 42.9 temporal samples, a cut-aware shutter, discrete graphics stepped on frame time, cross-process bit-identical frames, a lossless master, BT.709 end to end, and audio at 0 ms. |
+
+No category is below 8. As the mandate requires, the rest of the song is **not** started from here.
