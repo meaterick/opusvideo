@@ -258,7 +258,8 @@ export class OpusShot extends Shot {
     const lg = reveal(this.give, t, this.giveTimes);
     this.give.visible = t > tGive - 0.05 && t < tIt - 0.1;
     const dOn = outExpo(prog(t, tDiff - 0.02, tDiff + 0.25));
-    const pull = inExpo(prog(t, tReason - 0.06, tReason + 0.12));  // into the code line
+    // into the code line: anticipation on "can", gone just before REASON lands
+    const pull = inExpo(prog(t, tReason - 0.16, tReason - 0.01));
     this.diff.visible = t > tDiff - 0.02 && pull < 0.999;
     const codeHome = this.R(246, 700, 0.5);
     const sc = lerp(1, (unitR * 60 * 0.72) / (unitR * 250), pull);
@@ -279,11 +280,11 @@ export class OpusShot extends Shot {
       const [sx, sy] = corners[i];
       const x0 = cx + sx * bw * spread, y0 = cy + sy * bh * spread, z = ZK + 0.5;
       r.setPoints([new THREE.Vector3(x0 - sx * L, y0, z), new THREE.Vector3(x0, y0, z), new THREE.Vector3(x0, y0 - sy * L, z)]).draw(1);
-      r.visible = t > tName - 0.02 && t < tReason;
+      r.visible = t > tName - 0.02 && pull < 0.3; // they leave with the word
     });
     const an = reveal(this.aName, t, this.aNameTimes);
     this.aName.position.set(cx + bw - this.aName.width, cy - bh - unitR * 70, ZK + 0.5);
-    this.aName.visible = t > this.aNameTimes[0] - 0.02 && t < tReason;
+    this.aName.visible = t > this.aNameTimes[0] - 0.02 && pull < 0.3;
 
     // ---------------- shot 9: the path pulled taut, verbs on the line, code, machine
     const lineY = this.R(960, 600).y, lx0 = this.R(246, 600).x, lx1 = this.R(1674, 600).x;
@@ -299,14 +300,15 @@ export class OpusShot extends Shot {
     const vt = [tReason, tWrite, tBuild];
     this.heroes.forEach((w, i) => {
       const t0 = vt[i], t1 = i < 2 ? vt[i + 1] : 99;
-      const inn = outExpo(prog(t, t0 - 0.02, t0 + 0.2)), out = inExpo(prog(t, t1 - 0.08, t1 + 0.06));
-      w.visible = t > t0 - 0.02 && out < 0.99;
+      // each verb lands on its onset and has left before the next one lands
+      const inn = outExpo(prog(t, t0, t0 + 0.2)), out = inExpo(prog(t, t1 - 0.12, t1 - 0.01));
+      w.visible = t > t0 && out < 0.99;
       const base = this.R(246, 570, 0.5);
       w.position.set(base.x, base.y - (1 - inn) * unitR * 60 + out * unitR * 260, base.z);
       w.glyphs.forEach((gg, k) => { gg.scale.set(1, lerp(0.2, 1, springOver(t - t0 - k * 0.018, 30, 0.55)), 1); });
     });
     // code line accumulating below the line: one token per verb (+ the named word first)
-    const tokT = [tReason + 0.12, tWrite, tWrite + 0.18, tBuild];
+    const tokT = [tReason - 0.01, tWrite, tWrite + 0.18, tBuild]; // the named word lands as the pull ends
     const codeBase = this.R(246, 700, 0.5);
     const buildT = (i: number) => tBuild + 0.04 + i * (m.P / 4);  // one block per 16th
     this.code.forEach((w, i) => {

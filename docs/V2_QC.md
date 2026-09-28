@@ -126,3 +126,11 @@ light falls off across A-L-L into the dark: the cursor has become the light.
 |---|---|
 | After the fly-through the knot held completely still, ~0.4 s of dead frame in the chorus. It read as a generic scribble. | Signal pulses run along every path and advance one step per beat (an outExpo step, then stillness), and the knot turns slowly (0.12 rad/s) for parallax. The pulses are denser and paler, not glowing (they stay under the halation threshold; glow stays reserved for the cursor and verification). The taut "reason" path is now sampled in knot space, so it leaves the rotated knot without a pop. |
 | The floor's horizon crossed the middle of the knot. | The floor dissolves as the camera enters the O (fly 0.45–0.8), so the reasoning space is a void. The machine later stands on its own workbench. |
+
+### Stage 3d — the verb hand-offs (28.0–28.6)
+
+| defect | fix |
+|---|---|
+| REASON landed while *difficult* was still at hero size (28.12–28.20, the two words overlapped). | *difficult* is pulled into the code line on "can" (anticipation, inExpo 0.15 s) and lands there just before REASON lands on its onset. The code token appears exactly when the pull ends. |
+| WRITE grew in under REASON before REASON had left (28.45 read as a glitch). | Each verb lands on its onset and has left before the next lands (exit inExpo ending 10 ms before the next onset). |
+| The name brackets and "a name" framed empty space for a frame after the word left. | They leave with the word. |
