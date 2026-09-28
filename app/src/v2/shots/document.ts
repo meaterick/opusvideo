@@ -171,7 +171,9 @@ export class DocumentShot extends Shot {
     // ---------------- the document line
     const last = reveal(this.doc, t, this.docTimes);
     const docOut = outExpo(prog(t, tMult - 0.02, tMult + 0.2));
-    this.doc.visible = t < tMult + 0.2;
+    // gone on the slam: fragments between MULTIPLY's letters
+    // read as a collision (the echoes carry the depth from here)
+    this.doc.visible = t < tMult;
     this.doc.position.z = -docOut * 3;
     this.context.forEach((w, i) => {
       const on = outExpo(prog(t, 15.1 + i * 0.05, 15.5 + i * 0.05));
@@ -191,7 +193,7 @@ export class DocumentShot extends Shot {
       const drop = s === 1 ? brk * rig.px(10) : 0;
       r.setPoints([new THREE.Vector3(segs[s][0], this.span.y - drop, 0.01), new THREE.Vector3(segs[s][1], this.span.y - drop, 0.01)]).draw(1);
       (r.material as THREE.MeshBasicMaterial).color.copy(COL.mint).multiplyScalar(1.35).lerp(COL.porcelainShade, cool);
-      r.visible = t < tMult + 0.05;
+      r.visible = t < tMult;
     });
 
     // ---------------- MULTIPLY and its echoes

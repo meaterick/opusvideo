@@ -140,3 +140,4 @@ light falls off across A-L-L into the dark: the cursor has become the light.
 | frames | defect | fix |
 |---|---|---|
 | 814–818 | The cursor teleported from its rest (path point 3) to the path start at the top-left edge when the pass's anticipation began. The pass was measured from arc length 0. | The pass starts at the rest point's arc length: rest → 60 px pull-back → run, all continuous. |
+| 981–993 | On the MULTIPLY slam (16.348), fragments of "When the hard parts" showed between the hero's letters for 0.2 s. | The line and its underline go on the onset; the echoes carry the depth. |
