@@ -314,7 +314,9 @@ export class WallShot extends Shot {
     // the pass: cursor runs the path (anticipation, acceleration, settle)
     const passU = t < tPass ? 0 : outExpo(prog(t, tPass, tPass + 0.32)) * 0.35 + inOutCubic(prog(t, tPass, tPass + 0.32)) * 0.65;
     const antic = t > tPass - 0.13 && t < tPass ? -rig.px(60) * Math.sin(Math.PI * 0.5 * inOutCubic(prog(t, tPass - 0.13, tPass))) : 0;
-    const passS = passU * this.path.total;
+    // the pass starts where the cursor rests (path point 3), so it never jumps
+    const s0 = this.path.lengthAt(3);
+    const passS = s0 + passU * (this.path.total - s0);
     const passPos = this.path.at(passS);
     this.ticks.forEach((tk, i) => {
       const passed = passPos.x > this.detourX[i] && t >= tPass;

@@ -134,3 +134,9 @@ light falls off across A-L-L into the dark: the cursor has become the light.
 | REASON landed while *difficult* was still at hero size (28.12–28.20, the two words overlapped). | *difficult* is pulled into the code line on "can" (anticipation, inExpo 0.15 s) and lands there just before REASON lands on its onset. The code token appears exactly when the pull ends. |
 | WRITE grew in under REASON before REASON had left (28.45 read as a glitch). | Each verb lands on its onset and has left before the next lands (exit inExpo ending 10 ms before the next onset). |
 | The name brackets and "a name" framed empty space for a frame after the word left. | They leave with the word. |
+
+## Stage 4 — typography/motion test, 4K (11.80–16.80)
+
+| frames | defect | fix |
+|---|---|---|
+| 814–818 | The cursor teleported from its rest (path point 3) to the path start at the top-left edge when the pass's anticipation began. The pass was measured from arc length 0. | The pass starts at the rest point's arc length: rest → 60 px pull-back → run, all continuous. |

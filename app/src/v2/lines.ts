@@ -25,6 +25,8 @@ export class Ribbon extends THREE.Mesh<THREE.BufferGeometry, THREE.Material> {
     this.total = this.lengths[this.lengths.length - 1] ?? 0;
     return this;
   }
+  /** Arc length at point index i. */
+  lengthAt(i: number) { return this.lengths[Math.max(0, Math.min(i, this.lengths.length - 1))] ?? 0; }
   /** Point at arc length s. */
   at(s: number, out = new THREE.Vector3()) {
     const L = this.lengths, P = this.pts;
