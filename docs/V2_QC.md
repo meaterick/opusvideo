@@ -110,3 +110,12 @@ The review was done frame by frame (every 2nd frame tiled at 1/3 scale, suspect 
 
 After the fix the sequence reads: the O between rails, with the cursor on the right rail; one snap
 into the single stroke on the 8th at 23.40; 0.2 s of stillness; CALL on its onset (23.611).
+
+### Stage 3b — the band stop (23.90), measured
+
+On the first render CALL kept 93 % of its brightness after the key dropped to 12 %, so the stop did not
+read. `render2 eval` zeroed each light in turn at 24.05: without the spot the far L stayed at 56/255,
+and without any single light it stayed above 55. The remainder came from terms that are not lights:
+the porcelain's studio reflection and the wrap lift (a constant 0.18 × albedo). After the stop both now
+fade to ~0 with the key (key 4 %), and the ember light rises 3 → 12. The C is lit by the stroke and the
+light falls off across A-L-L into the dark: the cursor has become the light.

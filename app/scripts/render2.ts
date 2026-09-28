@@ -13,6 +13,7 @@
 //   verify  --t 24.5 [--samples auto]   renders the same timestamp twice (other frames in
 //           between) and compares SHA-256 of the pixels; also reports assets loaded
 //   perf    --t 12.9 [--samples 1]        one frame, wall time
+//   eval    --js 'return ...'            debugging: run code in the page (O, E, THREE)
 //   prof    --t 24.45                     per-stage cost (sample, env, accum, post, probe, per mesh)
 //
 // GL: on Linux with Xvfb installed the default is ANGLE->GL (Mesa llvmpipe) in a private
@@ -242,7 +243,11 @@ const { browser, page, logs } = await openPage(url);
 try {
   const poc = await page.evaluate(() => (window as any).__ov.poc as { from: number; to: number });
   const times = (opt('t') ?? '').split(',').filter(Boolean).map(Number);
-  if (mode === 'stills') await stills(page, times, path.resolve(opt('out', path.join(OUT, 'stills'))!));
+  if (mode === 'eval') {
+    // debugging: evaluate --js in the page (with O = window.__ov, E = O.eng, THREE) and print the result
+    const r = await page.evaluate((code) => { const O = (window as any).__ov; return new Function('O', 'E', 'THREE', code)(O, O.eng, (window as any).__THREE); }, opt('js', 'return null')!);
+    console.log(JSON.stringify(r, null, 1));
+  } else if (mode === 'stills') await stills(page, times, path.resolve(opt('out', path.join(OUT, 'stills'))!));
   else if (mode === 'sheet') {
     const dir = path.join(OUT, 'sheet_tmp');
     await stills(page, times, dir);

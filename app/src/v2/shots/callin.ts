@@ -101,9 +101,9 @@ export class CallInShot extends Shot {
     this.lighting.fill.intensity = 0;
     // the studio reflection dies with the key (it alone kept CALL at 93 %
     // after the stop); what is left is the ember's steep falloff
-    this.callMat.envMapIntensity = lerp(0.22, 0.03, dim);
+    this.callMat.envMapIntensity = lerp(0.22, 0.008, dim);
     (this.callMat as THREE.MeshPhysicalMaterial).clearcoat = lerp(0.35, 0.2, dim);
-    this.callMat.userData.wrap.value = lerp(1, 0.1, dim);
+    this.callMat.userData.wrap.value = lerp(1, 0, dim);
     this.nMat.envMapIntensity = 0.04;
     this.nMat.userData.wrap.value = 0.15;
     this.lighting.rim.intensity = isIn ? 0.15 : 0.35;
@@ -123,7 +123,7 @@ export class CallInShot extends Shot {
       const x = CALL_X + rigC.x(STROKE.x);
       this.cursor.pose({ x, y: (top + bottom) / 2, z: 0.2, h: top - bottom, w: rigC.px(18), notches: 3, intensity: 7 });
       this.emberLight.position.set(x + 0.4, (top + bottom) / 2, 1.2);
-      this.emberLight.intensity = lerp(3, 7, dim);
+      this.emberLight.intensity = lerp(3, 12, dim);
       this.housing.visible = false;
     } else {
       const bright = lerp(7, 10, prog(t, tIn, this.end)) * (1 - 0.02 * Math.max(0, recoil(t - tIn, 36, 0.5)));
