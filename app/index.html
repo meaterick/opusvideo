@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Call in Opus — preview</title>
+  <link rel="icon" href="data:," />
+  <style>
+    :root { --ink: #07090f; --ink2: #0f1522; --line: #2a3140; --dim: #5d6778; --paper: #ece5d8; --ember: #ff7a45; }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; background: var(--ink); color: var(--paper); font: 13px/1.4 "JetBrains Mono", ui-monospace, monospace; overflow: hidden; }
+    #stage { position: absolute; inset: 0 0 64px 0; display: grid; place-items: center; }
+    body.export #stage, body.bare #stage { inset: 0; }
+    canvas#c { width: min(100vw, calc((100vh - 64px) * 16 / 9)); aspect-ratio: 16 / 9; display: block; background: #000; }
+    body.export canvas#c { width: 1920px; height: 1080px; }
+    body.bare canvas#c { width: min(100vw, calc(100vh * 16 / 9)); }
+    #ui { position: absolute; left: 0; right: 0; bottom: 0; height: 64px; padding: 8px 16px; display: grid; grid-template-columns: auto 1fr auto; gap: 14px; align-items: center; background: var(--ink2); border-top: 1px solid var(--line); }
+    body.export #ui, body.bare #ui { display: none; }
+    button { font: inherit; color: var(--paper); background: transparent; border: 1px solid var(--line); border-radius: 6px; padding: 6px 10px; cursor: pointer; }
+    button:hover { border-color: var(--ember); }
+    #bar { position: relative; height: 34px; cursor: pointer; }
+    #track { position: absolute; left: 0; right: 0; top: 15px; height: 4px; background: var(--line); border-radius: 2px; }
+    #fill { position: absolute; left: 0; top: 15px; height: 4px; background: var(--ember); border-radius: 2px; }
+    .sec { position: absolute; top: 0; height: 12px; border-left: 1px solid var(--dim); padding-left: 3px; font-size: 10px; color: var(--dim); white-space: nowrap; overflow: hidden; }
+    #info { text-align: right; white-space: nowrap; color: var(--dim); }
+    #info b { color: var(--paper); font-weight: 500; }
+    #gate { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(7, 9, 15, 0.72); cursor: pointer; z-index: 5; }
+    #gate div { text-align: center; }
+    #gate .big { font: 600 42px "Space Grotesk", system-ui, sans-serif; letter-spacing: -0.02em; }
+    #gate .caret { display: inline-block; width: 0.08em; height: 0.9em; background: var(--ember); margin-left: 6px; vertical-align: -0.08em; animation: bl 1s steps(1) infinite; box-shadow: 0 0 18px var(--ember); }
+    @keyframes bl { 50% { opacity: 0.15; } }
+    #gate .small { color: var(--dim); margin-top: 10px; }
+    body.export #gate { display: none; }
+    #err { position: absolute; left: 16px; top: 16px; right: 16px; color: #ff4d5e; white-space: pre-wrap; z-index: 9; }
+    @media (max-width: 700px) { #ui { grid-template-columns: auto 1fr; } #info { display: none; } }
+  </style>
+</head>
+<body>
+  <div id="stage"><canvas id="c" width="1920" height="1080"></canvas></div>
+  <div id="ui">
+    <div><button id="play">▶ play</button> <button id="loop" title="loop the proof-of-concept window (l)">loop</button></div>
+    <div id="bar"><div id="track"></div><div id="fill"></div></div>
+    <div id="info"></div>
+  </div>
+  <div id="gate"><div><div class="big">Call in Opus<span class="caret"></span></div><div class="small">loading…</div></div></div>
+  <div id="err"></div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

@@ -1,0 +1,2517 @@
+{
+ "source": "lyrics/lyrics.txt",
+ "duration": 170.0,
+ "method": "torchaudio MMS_FA CTC forced alignment on the Demucs htdemucs vocal stem (global, star token between lines), cross-checked against faster-whisper small.en word timestamps. conf = mix of CTC score and whisper agreement (0..1).",
+ "stats": {
+  "whisper_matched": 257,
+  "words": 306,
+  "whisper_median_abs_dt": 0.08,
+  "whisper_p90_abs_dt": 0.276
+ },
+ "sections": [
+  {
+   "id": "verse1",
+   "title": "Verse 1",
+   "start": 0.56,
+   "end": 14.98
+  },
+  {
+   "id": "pre1",
+   "title": "Pre-Chorus",
+   "start": 15.04,
+   "end": 20.7
+  },
+  {
+   "id": "chorus1",
+   "title": "Chorus",
+   "start": 23.62,
+   "end": 38.94
+  },
+  {
+   "id": "verse2",
+   "title": "Verse 2",
+   "start": 45.56,
+   "end": 59.84
+  },
+  {
+   "id": "pre2",
+   "title": "Pre-Chorus",
+   "start": 59.9,
+   "end": 66.44
+  },
+  {
+   "id": "chorus2",
+   "title": "Chorus",
+   "start": 66.5,
+   "end": 81.76
+  },
+  {
+   "id": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "start": 88.8,
+   "end": 99.36
+  },
+  {
+   "id": "final1",
+   "title": "Final Chorus",
+   "start": 116.26,
+   "end": 146.44
+  },
+  {
+   "id": "outro1",
+   "title": "Outro",
+   "start": 146.5,
+   "end": 158.52
+  }
+ ],
+ "lines": [
+  {
+   "section": "verse1",
+   "title": "Verse 1",
+   "text": "Drop the repo, name the goal",
+   "start": 0.56,
+   "end": 2.14,
+   "words": [
+    {
+     "text": "Drop",
+     "start": 0.56,
+     "end": 0.8,
+     "conf": 0.175
+    },
+    {
+     "text": "the",
+     "start": 0.8,
+     "end": 0.88,
+     "conf": 0.583
+    },
+    {
+     "text": "repo,",
+     "start": 1.0,
+     "end": 1.32,
+     "conf": 0.595
+    },
+    {
+     "text": "name",
+     "start": 1.46,
+     "end": 1.7,
+     "conf": 0.728
+    },
+    {
+     "text": "the",
+     "start": 1.7,
+     "end": 1.82,
+     "conf": 0.736
+    },
+    {
+     "text": "goal",
+     "start": 1.82,
+     "end": 2.14,
+     "conf": 0.711
+    }
+   ]
+  },
+  {
+   "section": "verse1",
+   "title": "Verse 1",
+   "text": "Opus maps the moving whole",
+   "start": 2.42,
+   "end": 4.04,
+   "words": [
+    {
+     "text": "Opus",
+     "start": 2.42,
+     "end": 2.82,
+     "conf": 0.499
+    },
+    {
+     "text": "maps",
+     "start": 2.82,
+     "end": 3.06,
+     "conf": 0.299
+    },
+    {
+     "text": "the",
+     "start": 3.06,
+     "end": 3.14,
+     "conf": 0.715
+    },
+    {
+     "text": "moving",
+     "start": 3.26,
+     "end": 3.7,
+     "conf": 0.648
+    },
+    {
+     "text": "whole",
+     "start": 3.7,
+     "end": 4.04,
+     "conf": 0.247
+    }
+   ]
+  },
+  {
+   "section": "verse1",
+   "title": "Verse 1",
+   "text": "Reads the docs and follows state",
+   "start": 4.18,
+   "end": 5.76,
+   "words": [
+    {
+     "text": "Reads",
+     "start": 4.18,
+     "end": 4.42,
+     "conf": 0.601
+    },
+    {
+     "text": "the",
+     "start": 4.42,
+     "end": 4.5,
+     "conf": 0.8
+    },
+    {
+     "text": "docs",
+     "start": 4.64,
+     "end": 4.92,
+     "conf": 0.585
+    },
+    {
+     "text": "and",
+     "start": 4.92,
+     "end": 5.06,
+     "conf": 0.622
+    },
+    {
+     "text": "follows",
+     "start": 5.06,
+     "end": 5.4,
+     "conf": 0.788
+    },
+    {
+     "text": "state",
+     "start": 5.4,
+     "end": 5.76,
+     "conf": 0.66
+    }
+   ]
+  },
+  {
+   "section": "verse1",
+   "title": "Verse 1",
+   "text": "Finds the bug behind the break",
+   "start": 5.98,
+   "end": 7.4,
+   "words": [
+    {
+     "text": "Finds",
+     "start": 5.98,
+     "end": 6.26,
+     "conf": 0.423
+    },
+    {
+     "text": "the",
+     "start": 6.26,
+     "end": 6.32,
+     "conf": 0.689
+    },
+    {
+     "text": "bug",
+     "start": 6.44,
+     "end": 6.68,
+     "conf": 0.808
+    },
+    {
+     "text": "behind",
+     "start": 6.68,
+     "end": 7.04,
+     "conf": 0.732
+    },
+    {
+     "text": "the",
+     "start": 7.04,
+     "end": 7.12,
+     "conf": 0.748
+    },
+    {
+     "text": "break",
+     "start": 7.12,
+     "end": 7.4,
+     "conf": 0.637
+    }
+   ]
+  },
+  {
+   "section": "verse1",
+   "title": "Verse 1",
+   "text": "Draft the system, test the claim",
+   "start": 7.78,
+   "end": 9.36,
+   "words": [
+    {
+     "text": "Draft",
+     "start": 7.78,
+     "end": 8.04,
+     "conf": 0.134
+    },
+    {
+     "text": "the",
+     "start": 8.04,
+     "end": 8.24,
+     "conf": 0.672
+    },
+    {
+     "text": "system,",
+     "start": 8.24,
+     "end": 8.7,
+     "conf": 0.77
+    },
+    {
+     "text": "test",
+     "start": 8.7,
+     "end": 8.94,
+     "conf": 0.794
+    },
+    {
+     "text": "the",
+     "start": 8.94,
+     "end": 9.04,
+     "conf": 0.705
+    },
+    {
+     "text": "claim",
+     "start": 9.04,
+     "end": 9.36,
+     "conf": 0.802
+    }
+   ]
+  },
+  {
+   "section": "verse1",
+   "title": "Verse 1",
+   "text": "Refactor without changing aim",
+   "start": 9.42,
+   "end": 11.32,
+   "words": [
+    {
+     "text": "Refactor",
+     "start": 9.42,
+     "end": 10.08,
+     "conf": 0.676
+    },
+    {
+     "text": "without",
+     "start": 10.08,
+     "end": 10.4,
+     "conf": 0.596
+    },
+    {
+     "text": "changing",
+     "start": 10.4,
+     "end": 10.96,
+     "conf": 0.758
+    },
+    {
+     "text": "aim",
+     "start": 10.96,
+     "end": 11.32,
+     "conf": 0.573
+    }
+   ]
+  },
+  {
+   "section": "verse1",
+   "title": "Verse 1",
+   "text": "From a sketch to something live",
+   "start": 11.42,
+   "end": 13.02,
+   "words": [
+    {
+     "text": "From",
+     "start": 11.42,
+     "end": 11.7,
+     "conf": 0.577
+    },
+    {
+     "text": "a",
+     "start": 11.7,
+     "end": 11.82,
+     "conf": 0.02
+    },
+    {
+     "text": "sketch",
+     "start": 11.82,
+     "end": 12.12,
+     "conf": 0.748
+    },
+    {
+     "text": "to",
+     "start": 12.12,
+     "end": 12.24,
+     "conf": 0.671
+    },
+    {
+     "text": "something",
+     "start": 12.24,
+     "end": 12.68,
+     "conf": 0.803
+    },
+    {
+     "text": "live",
+     "start": 12.68,
+     "end": 13.02,
+     "conf": 0.347
+    }
+   ]
+  },
+  {
+   "section": "verse1",
+   "title": "Verse 1",
+   "text": "One more pass, then optimize",
+   "start": 13.3,
+   "end": 14.98,
+   "words": [
+    {
+     "text": "One",
+     "start": 13.3,
+     "end": 13.46,
+     "conf": 0.708
+    },
+    {
+     "text": "more",
+     "start": 13.46,
+     "end": 13.68,
+     "conf": 0.746
+    },
+    {
+     "text": "pass,",
+     "start": 13.68,
+     "end": 13.96,
+     "conf": 0.786
+    },
+    {
+     "text": "then",
+     "start": 13.96,
+     "end": 14.1,
+     "conf": 0.675
+    },
+    {
+     "text": "optimize",
+     "start": 14.1,
+     "end": 14.98,
+     "conf": 0.628
+    }
+   ]
+  },
+  {
+   "section": "pre1",
+   "title": "Pre-Chorus",
+   "text": "When the hard parts multiply",
+   "start": 15.04,
+   "end": 18.52,
+   "words": [
+    {
+     "text": "When",
+     "start": 15.04,
+     "end": 15.18,
+     "conf": 0.264
+    },
+    {
+     "text": "the",
+     "start": 15.18,
+     "end": 15.28,
+     "conf": 0.5
+    },
+    {
+     "text": "hard",
+     "start": 15.5,
+     "end": 15.94,
+     "conf": 0.773
+    },
+    {
+     "text": "parts",
+     "start": 15.94,
+     "end": 16.42,
+     "conf": 0.687
+    },
+    {
+     "text": "multiply",
+     "start": 16.42,
+     "end": 18.52,
+     "conf": 0.52
+    }
+   ]
+  },
+  {
+   "section": "pre1",
+   "title": "Pre-Chorus",
+   "text": "Give it context, let it try",
+   "start": 18.68,
+   "end": 20.7,
+   "words": [
+    {
+     "text": "Give",
+     "start": 18.68,
+     "end": 18.86,
+     "conf": 0.655
+    },
+    {
+     "text": "it",
+     "start": 18.86,
+     "end": 19.06,
+     "conf": 0.614
+    },
+    {
+     "text": "context,",
+     "start": 19.06,
+     "end": 19.84,
+     "conf": 0.547
+    },
+    {
+     "text": "let",
+     "start": 20.02,
+     "end": 20.22,
+     "conf": 0.464
+    },
+    {
+     "text": "it",
+     "start": 20.34,
+     "end": 20.54,
+     "conf": 0.4
+    },
+    {
+     "text": "try",
+     "start": 20.54,
+     "end": 20.7,
+     "conf": 0.483
+    }
+   ]
+  },
+  {
+   "section": "chorus1",
+   "title": "Chorus",
+   "text": "Call in Opus",
+   "start": 23.62,
+   "end": 25.0,
+   "words": [
+    {
+     "text": "Call",
+     "start": 23.62,
+     "end": 24.2,
+     "conf": 0.225
+    },
+    {
+     "text": "in",
+     "start": 24.2,
+     "end": 24.52,
+     "conf": 0.0
+    },
+    {
+     "text": "Opus",
+     "start": 24.52,
+     "end": 25.0,
+     "conf": 0.4
+    }
+   ]
+  },
+  {
+   "section": "chorus1",
+   "title": "Chorus",
+   "text": "Give the difficult a name",
+   "start": 25.88,
+   "end": 27.48,
+   "words": [
+    {
+     "text": "Give",
+     "start": 25.88,
+     "end": 26.02,
+     "conf": 0.279
+    },
+    {
+     "text": "the",
+     "start": 26.02,
+     "end": 26.2,
+     "conf": 0.0
+    },
+    {
+     "text": "difficult",
+     "start": 26.2,
+     "end": 26.94,
+     "conf": 0.77
+    },
+    {
+     "text": "a",
+     "start": 26.94,
+     "end": 27.0,
+     "conf": 0.0
+    },
+    {
+     "text": "name",
+     "start": 27.1,
+     "end": 27.48,
+     "conf": 0.718
+    }
+   ]
+  },
+  {
+   "section": "chorus1",
+   "title": "Chorus",
+   "text": "It can reason, write, and build it",
+   "start": 27.66,
+   "end": 29.36,
+   "words": [
+    {
+     "text": "It",
+     "start": 27.66,
+     "end": 27.78,
+     "conf": 0.225
+    },
+    {
+     "text": "can",
+     "start": 27.78,
+     "end": 28.06,
+     "conf": 0.565
+    },
+    {
+     "text": "reason,",
+     "start": 28.06,
+     "end": 28.54,
+     "conf": 0.548
+    },
+    {
+     "text": "write,",
+     "start": 28.54,
+     "end": 28.84,
+     "conf": 0.193
+    },
+    {
+     "text": "and",
+     "start": 28.84,
+     "end": 29.02,
+     "conf": 0.574
+    },
+    {
+     "text": "build",
+     "start": 29.02,
+     "end": 29.3,
+     "conf": 0.727
+    },
+    {
+     "text": "it",
+     "start": 29.3,
+     "end": 29.36,
+     "conf": 0.518
+    }
+   ]
+  },
+  {
+   "section": "chorus1",
+   "title": "Chorus",
+   "text": "Then inspect the thing it made",
+   "start": 29.38,
+   "end": 31.04,
+   "words": [
+    {
+     "text": "Then",
+     "start": 29.38,
+     "end": 29.62,
+     "conf": 0.423
+    },
+    {
+     "text": "inspect",
+     "start": 29.62,
+     "end": 30.04,
+     "conf": 0.715
+    },
+    {
+     "text": "the",
+     "start": 30.04,
+     "end": 30.22,
+     "conf": 0.612
+    },
+    {
+     "text": "thing",
+     "start": 30.22,
+     "end": 30.54,
+     "conf": 0.704
+    },
+    {
+     "text": "it",
+     "start": 30.54,
+     "end": 30.7,
+     "conf": 0.636
+    },
+    {
+     "text": "made",
+     "start": 30.7,
+     "end": 31.04,
+     "conf": 0.352
+    }
+   ]
+  },
+  {
+   "section": "chorus1",
+   "title": "Chorus",
+   "text": "Call in Opus",
+   "start": 31.1,
+   "end": 32.16,
+   "words": [
+    {
+     "text": "Call",
+     "start": 31.1,
+     "end": 31.46,
+     "conf": 0.377
+    },
+    {
+     "text": "in",
+     "start": 31.46,
+     "end": 31.62,
+     "conf": 0.1
+    },
+    {
+     "text": "Opus",
+     "start": 31.76,
+     "end": 32.16,
+     "conf": 0.147
+    }
+   ]
+  },
+  {
+   "section": "chorus1",
+   "title": "Chorus",
+   "text": "Give it tools and give it time",
+   "start": 33.06,
+   "end": 34.76,
+   "words": [
+    {
+     "text": "Give",
+     "start": 33.06,
+     "end": 33.22,
+     "conf": 0.0
+    },
+    {
+     "text": "it",
+     "start": 33.22,
+     "end": 33.34,
+     "conf": 0.48
+    },
+    {
+     "text": "tools",
+     "start": 33.34,
+     "end": 33.78,
+     "conf": 0.619
+    },
+    {
+     "text": "and",
+     "start": 33.78,
+     "end": 33.94,
+     "conf": 0.562
+    },
+    {
+     "text": "give",
+     "start": 33.94,
+     "end": 34.1,
+     "conf": 0.609
+    },
+    {
+     "text": "it",
+     "start": 34.1,
+     "end": 34.22,
+     "conf": 0.465
+    },
+    {
+     "text": "time",
+     "start": 34.22,
+     "end": 34.76,
+     "conf": 0.785
+    }
+   ]
+  },
+  {
+   "section": "chorus1",
+   "title": "Chorus",
+   "text": "From the prompt to production",
+   "start": 34.82,
+   "end": 36.54,
+   "words": [
+    {
+     "text": "From",
+     "start": 34.82,
+     "end": 35.06,
+     "conf": 0.782
+    },
+    {
+     "text": "the",
+     "start": 35.06,
+     "end": 35.24,
+     "conf": 0.729
+    },
+    {
+     "text": "prompt",
+     "start": 35.24,
+     "end": 35.6,
+     "conf": 0.571
+    },
+    {
+     "text": "to",
+     "start": 35.6,
+     "end": 35.74,
+     "conf": 0.532
+    },
+    {
+     "text": "production",
+     "start": 35.94,
+     "end": 36.54,
+     "conf": 0.714
+    }
+   ]
+  },
+  {
+   "section": "chorus1",
+   "title": "Chorus",
+   "text": "One verified step at a time",
+   "start": 36.76,
+   "end": 38.94,
+   "words": [
+    {
+     "text": "One",
+     "start": 36.76,
+     "end": 37.06,
+     "conf": 0.64
+    },
+    {
+     "text": "verified",
+     "start": 37.06,
+     "end": 37.9,
+     "conf": 0.613
+    },
+    {
+     "text": "step",
+     "start": 37.9,
+     "end": 38.26,
+     "conf": 0.622
+    },
+    {
+     "text": "at",
+     "start": 38.26,
+     "end": 38.5,
+     "conf": 0.429
+    },
+    {
+     "text": "a",
+     "start": 38.5,
+     "end": 38.6,
+     "conf": 0.581
+    },
+    {
+     "text": "time",
+     "start": 38.6,
+     "end": 38.94,
+     "conf": 0.492
+    }
+   ]
+  },
+  {
+   "section": "verse2",
+   "title": "Verse 2",
+   "text": "Parse the paper, plot the trend",
+   "start": 45.56,
+   "end": 47.28,
+   "words": [
+    {
+     "text": "Parse",
+     "start": 45.56,
+     "end": 45.82,
+     "conf": 0.127
+    },
+    {
+     "text": "the",
+     "start": 45.82,
+     "end": 46.0,
+     "conf": 0.492
+    },
+    {
+     "text": "paper,",
+     "start": 46.0,
+     "end": 46.38,
+     "conf": 0.608
+    },
+    {
+     "text": "plot",
+     "start": 46.38,
+     "end": 46.68,
+     "conf": 0.193
+    },
+    {
+     "text": "the",
+     "start": 46.68,
+     "end": 46.84,
+     "conf": 0.686
+    },
+    {
+     "text": "trend",
+     "start": 46.84,
+     "end": 47.28,
+     "conf": 0.389
+    }
+   ]
+  },
+  {
+   "section": "verse2",
+   "title": "Verse 2",
+   "text": "Catch the edge case at the end",
+   "start": 47.36,
+   "end": 49.02,
+   "words": [
+    {
+     "text": "Catch",
+     "start": 47.36,
+     "end": 47.58,
+     "conf": 0.724
+    },
+    {
+     "text": "the",
+     "start": 47.58,
+     "end": 47.76,
+     "conf": 0.767
+    },
+    {
+     "text": "edge",
+     "start": 47.76,
+     "end": 48.02,
+     "conf": 0.79
+    },
+    {
+     "text": "case",
+     "start": 48.02,
+     "end": 48.32,
+     "conf": 0.825
+    },
+    {
+     "text": "at",
+     "start": 48.32,
+     "end": 48.48,
+     "conf": 0.651
+    },
+    {
+     "text": "the",
+     "start": 48.48,
+     "end": 48.58,
+     "conf": 0.513
+    },
+    {
+     "text": "end",
+     "start": 48.78,
+     "end": 49.02,
+     "conf": 0.725
+    }
+   ]
+  },
+  {
+   "section": "verse2",
+   "title": "Verse 2",
+   "text": "Write the copy, shape the screen",
+   "start": 49.1,
+   "end": 50.82,
+   "words": [
+    {
+     "text": "Write",
+     "start": 49.1,
+     "end": 49.36,
+     "conf": 0.421
+    },
+    {
+     "text": "the",
+     "start": 49.36,
+     "end": 49.46,
+     "conf": 0.466
+    },
+    {
+     "text": "copy,",
+     "start": 49.46,
+     "end": 49.98,
+     "conf": 0.435
+    },
+    {
+     "text": "shape",
+     "start": 49.98,
+     "end": 50.24,
+     "conf": 0.262
+    },
+    {
+     "text": "the",
+     "start": 50.24,
+     "end": 50.38,
+     "conf": 0.707
+    },
+    {
+     "text": "screen",
+     "start": 50.38,
+     "end": 50.82,
+     "conf": 0.687
+    }
+   ]
+  },
+  {
+   "section": "verse2",
+   "title": "Verse 2",
+   "text": "Turn the vague to something seen",
+   "start": 50.94,
+   "end": 52.58,
+   "words": [
+    {
+     "text": "Turn",
+     "start": 50.94,
+     "end": 51.14,
+     "conf": 0.551
+    },
+    {
+     "text": "the",
+     "start": 51.14,
+     "end": 51.24,
+     "conf": 0.719
+    },
+    {
+     "text": "vague",
+     "start": 51.24,
+     "end": 51.6,
+     "conf": 0.59
+    },
+    {
+     "text": "to",
+     "start": 51.6,
+     "end": 51.68,
+     "conf": 0.507
+    },
+    {
+     "text": "something",
+     "start": 51.8,
+     "end": 52.26,
+     "conf": 0.733
+    },
+    {
+     "text": "seen",
+     "start": 52.26,
+     "end": 52.58,
+     "conf": 0.504
+    }
+   ]
+  },
+  {
+   "section": "verse2",
+   "title": "Verse 2",
+   "text": "Beat grid, lyrics, shaders, light",
+   "start": 52.7,
+   "end": 54.36,
+   "words": [
+    {
+     "text": "Beat",
+     "start": 52.7,
+     "end": 52.92,
+     "conf": 0.179
+    },
+    {
+     "text": "grid,",
+     "start": 52.92,
+     "end": 53.16,
+     "conf": 0.301
+    },
+    {
+     "text": "lyrics,",
+     "start": 53.16,
+     "end": 53.58,
+     "conf": 0.592
+    },
+    {
+     "text": "shaders,",
+     "start": 53.58,
+     "end": 53.9,
+     "conf": 0.47
+    },
+    {
+     "text": "light",
+     "start": 54.04,
+     "end": 54.36,
+     "conf": 0.521
+    }
+   ]
+  },
+  {
+   "section": "verse2",
+   "title": "Verse 2",
+   "text": "Sync each word and frame it right",
+   "start": 54.42,
+   "end": 56.1,
+   "words": [
+    {
+     "text": "Sync",
+     "start": 54.42,
+     "end": 54.76,
+     "conf": 0.362
+    },
+    {
+     "text": "each",
+     "start": 54.76,
+     "end": 54.96,
+     "conf": 0.681
+    },
+    {
+     "text": "word",
+     "start": 54.96,
+     "end": 55.22,
+     "conf": 0.732
+    },
+    {
+     "text": "and",
+     "start": 55.22,
+     "end": 55.36,
+     "conf": 0.649
+    },
+    {
+     "text": "frame",
+     "start": 55.36,
+     "end": 55.68,
+     "conf": 0.728
+    },
+    {
+     "text": "it",
+     "start": 55.68,
+     "end": 55.84,
+     "conf": 0.525
+    },
+    {
+     "text": "right",
+     "start": 55.84,
+     "end": 56.1,
+     "conf": 0.739
+    }
+   ]
+  },
+  {
+   "section": "verse2",
+   "title": "Verse 2",
+   "text": "Headless Chrome and FFmpeg",
+   "start": 56.28,
+   "end": 57.9,
+   "words": [
+    {
+     "text": "Headless",
+     "start": 56.28,
+     "end": 56.68,
+     "conf": 0.407
+    },
+    {
+     "text": "Chrome",
+     "start": 56.68,
+     "end": 57.0,
+     "conf": 0.311
+    },
+    {
+     "text": "and",
+     "start": 57.0,
+     "end": 57.12,
+     "conf": 0.271
+    },
+    {
+     "text": "FFmpeg",
+     "start": 57.12,
+     "end": 57.9,
+     "conf": 0.253
+    }
+   ]
+  },
+  {
+   "section": "verse2",
+   "title": "Verse 2",
+   "text": "Render while the fans complain",
+   "start": 58.04,
+   "end": 59.84,
+   "words": [
+    {
+     "text": "Render",
+     "start": 58.04,
+     "end": 58.5,
+     "conf": 0.806
+    },
+    {
+     "text": "while",
+     "start": 58.5,
+     "end": 58.74,
+     "conf": 0.243
+    },
+    {
+     "text": "the",
+     "start": 58.74,
+     "end": 58.92,
+     "conf": 0.488
+    },
+    {
+     "text": "fans",
+     "start": 58.92,
+     "end": 59.2,
+     "conf": 0.688
+    },
+    {
+     "text": "complain",
+     "start": 59.2,
+     "end": 59.84,
+     "conf": 0.69
+    }
+   ]
+  },
+  {
+   "section": "pre2",
+   "title": "Pre-Chorus",
+   "text": "Not an oracle\u2014check the source",
+   "start": 59.9,
+   "end": 63.08,
+   "words": [
+    {
+     "text": "Not",
+     "start": 59.9,
+     "end": 60.14,
+     "conf": 0.283
+    },
+    {
+     "text": "an",
+     "start": 60.14,
+     "end": 60.24,
+     "conf": 0.513
+    },
+    {
+     "text": "oracle\u2014",
+     "start": 60.4,
+     "end": 61.0,
+     "conf": 0.5
+    },
+    {
+     "text": "check",
+     "start": 61.38,
+     "end": 61.64,
+     "conf": 0.384
+    },
+    {
+     "text": "the",
+     "start": 61.64,
+     "end": 61.72,
+     "conf": 0.462
+    },
+    {
+     "text": "source",
+     "start": 61.86,
+     "end": 63.08,
+     "conf": 0.439
+    }
+   ]
+  },
+  {
+   "section": "pre2",
+   "title": "Pre-Chorus",
+   "text": "Human hands still set the course",
+   "start": 63.42,
+   "end": 66.44,
+   "words": [
+    {
+     "text": "Human",
+     "start": 63.42,
+     "end": 63.84,
+     "conf": 0.262
+    },
+    {
+     "text": "hands",
+     "start": 63.84,
+     "end": 64.26,
+     "conf": 0.529
+    },
+    {
+     "text": "still",
+     "start": 64.26,
+     "end": 64.58,
+     "conf": 0.596
+    },
+    {
+     "text": "set",
+     "start": 64.96,
+     "end": 65.2,
+     "conf": 0.533
+    },
+    {
+     "text": "the",
+     "start": 65.2,
+     "end": 65.34,
+     "conf": 0.521
+    },
+    {
+     "text": "course",
+     "start": 65.34,
+     "end": 66.44,
+     "conf": 0.535
+    }
+   ]
+  },
+  {
+   "section": "chorus2",
+   "title": "Chorus",
+   "text": "Call in Opus",
+   "start": 66.5,
+   "end": 67.9,
+   "words": [
+    {
+     "text": "Call",
+     "start": 66.5,
+     "end": 67.1,
+     "conf": 0.334
+    },
+    {
+     "text": "in",
+     "start": 67.1,
+     "end": 67.34,
+     "conf": 0.137
+    },
+    {
+     "text": "Opus",
+     "start": 67.46,
+     "end": 67.9,
+     "conf": 0.407
+    }
+   ]
+  },
+  {
+   "section": "chorus2",
+   "title": "Chorus",
+   "text": "Give the difficult a name",
+   "start": 68.76,
+   "end": 70.38,
+   "words": [
+    {
+     "text": "Give",
+     "start": 68.76,
+     "end": 68.92,
+     "conf": 0.301
+    },
+    {
+     "text": "the",
+     "start": 68.92,
+     "end": 69.1,
+     "conf": 0.0
+    },
+    {
+     "text": "difficult",
+     "start": 69.1,
+     "end": 69.84,
+     "conf": 0.7
+    },
+    {
+     "text": "a",
+     "start": 69.84,
+     "end": 69.9,
+     "conf": 0.131
+    },
+    {
+     "text": "name",
+     "start": 69.98,
+     "end": 70.38,
+     "conf": 0.688
+    }
+   ]
+  },
+  {
+   "section": "chorus2",
+   "title": "Chorus",
+   "text": "It can reason, write, and build it",
+   "start": 70.48,
+   "end": 72.28,
+   "words": [
+    {
+     "text": "It",
+     "start": 70.48,
+     "end": 70.66,
+     "conf": 0.0
+    },
+    {
+     "text": "can",
+     "start": 70.66,
+     "end": 70.94,
+     "conf": 0.527
+    },
+    {
+     "text": "reason,",
+     "start": 70.94,
+     "end": 71.4,
+     "conf": 0.416
+    },
+    {
+     "text": "write,",
+     "start": 71.4,
+     "end": 71.58,
+     "conf": 0.0
+    },
+    {
+     "text": "and",
+     "start": 71.7,
+     "end": 71.88,
+     "conf": 0.57
+    },
+    {
+     "text": "build",
+     "start": 71.88,
+     "end": 72.2,
+     "conf": 0.699
+    },
+    {
+     "text": "it",
+     "start": 72.2,
+     "end": 72.28,
+     "conf": 0.648
+    }
+   ]
+  },
+  {
+   "section": "chorus2",
+   "title": "Chorus",
+   "text": "Then inspect the thing it made",
+   "start": 72.34,
+   "end": 73.84,
+   "words": [
+    {
+     "text": "Then",
+     "start": 72.34,
+     "end": 72.5,
+     "conf": 0.668
+    },
+    {
+     "text": "inspect",
+     "start": 72.5,
+     "end": 72.9,
+     "conf": 0.75
+    },
+    {
+     "text": "the",
+     "start": 72.9,
+     "end": 72.98,
+     "conf": 0.48
+    },
+    {
+     "text": "thing",
+     "start": 73.1,
+     "end": 73.4,
+     "conf": 0.746
+    },
+    {
+     "text": "it",
+     "start": 73.4,
+     "end": 73.56,
+     "conf": 0.627
+    },
+    {
+     "text": "made",
+     "start": 73.56,
+     "end": 73.84,
+     "conf": 0.537
+    }
+   ]
+  },
+  {
+   "section": "chorus2",
+   "title": "Chorus",
+   "text": "Call in Opus",
+   "start": 73.86,
+   "end": 75.02,
+   "words": [
+    {
+     "text": "Call",
+     "start": 73.86,
+     "end": 74.34,
+     "conf": 0.43
+    },
+    {
+     "text": "in",
+     "start": 74.34,
+     "end": 74.46,
+     "conf": 0.222
+    },
+    {
+     "text": "Opus",
+     "start": 74.6,
+     "end": 75.02,
+     "conf": 0.35
+    }
+   ]
+  },
+  {
+   "section": "chorus2",
+   "title": "Chorus",
+   "text": "Give it tools and give it time",
+   "start": 75.88,
+   "end": 77.62,
+   "words": [
+    {
+     "text": "Give",
+     "start": 75.88,
+     "end": 76.06,
+     "conf": 0.367
+    },
+    {
+     "text": "it",
+     "start": 76.06,
+     "end": 76.2,
+     "conf": 0.442
+    },
+    {
+     "text": "tools",
+     "start": 76.2,
+     "end": 76.62,
+     "conf": 0.52
+    },
+    {
+     "text": "and",
+     "start": 76.62,
+     "end": 76.78,
+     "conf": 0.523
+    },
+    {
+     "text": "give",
+     "start": 76.78,
+     "end": 76.96,
+     "conf": 0.732
+    },
+    {
+     "text": "it",
+     "start": 76.96,
+     "end": 77.06,
+     "conf": 0.425
+    },
+    {
+     "text": "time",
+     "start": 77.06,
+     "end": 77.62,
+     "conf": 0.658
+    }
+   ]
+  },
+  {
+   "section": "chorus2",
+   "title": "Chorus",
+   "text": "From the prompt to production",
+   "start": 77.66,
+   "end": 79.38,
+   "words": [
+    {
+     "text": "From",
+     "start": 77.66,
+     "end": 77.9,
+     "conf": 0.63
+    },
+    {
+     "text": "the",
+     "start": 77.9,
+     "end": 78.04,
+     "conf": 0.64
+    },
+    {
+     "text": "prompt",
+     "start": 78.04,
+     "end": 78.44,
+     "conf": 0.228
+    },
+    {
+     "text": "to",
+     "start": 78.44,
+     "end": 78.56,
+     "conf": 0.508
+    },
+    {
+     "text": "production",
+     "start": 78.78,
+     "end": 79.38,
+     "conf": 0.68
+    }
+   ]
+  },
+  {
+   "section": "chorus2",
+   "title": "Chorus",
+   "text": "One verified step at a time",
+   "start": 79.58,
+   "end": 81.76,
+   "words": [
+    {
+     "text": "One",
+     "start": 79.58,
+     "end": 79.9,
+     "conf": 0.304
+    },
+    {
+     "text": "verified",
+     "start": 79.9,
+     "end": 80.72,
+     "conf": 0.685
+    },
+    {
+     "text": "step",
+     "start": 80.72,
+     "end": 80.96,
+     "conf": 0.535
+    },
+    {
+     "text": "at",
+     "start": 81.1,
+     "end": 81.32,
+     "conf": 0.413
+    },
+    {
+     "text": "a",
+     "start": 81.32,
+     "end": 81.38,
+     "conf": 0.494
+    },
+    {
+     "text": "time",
+     "start": 81.38,
+     "end": 81.76,
+     "conf": 0.464
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Read it",
+   "start": 88.8,
+   "end": 89.1,
+   "words": [
+    {
+     "text": "Read",
+     "start": 88.8,
+     "end": 89.0,
+     "conf": 0.0
+    },
+    {
+     "text": "it",
+     "start": 89.0,
+     "end": 89.1,
+     "conf": 0.0
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Map it",
+   "start": 89.24,
+   "end": 89.42,
+   "words": [
+    {
+     "text": "Map",
+     "start": 89.24,
+     "end": 89.36,
+     "conf": 0.475
+    },
+    {
+     "text": "it",
+     "start": 89.36,
+     "end": 89.42,
+     "conf": 0.475
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Plan it",
+   "start": 89.66,
+   "end": 90.02,
+   "words": [
+    {
+     "text": "Plan",
+     "start": 89.66,
+     "end": 89.9,
+     "conf": 0.0
+    },
+    {
+     "text": "it",
+     "start": 89.9,
+     "end": 90.02,
+     "conf": 0.555
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Make it",
+   "start": 90.12,
+   "end": 90.46,
+   "words": [
+    {
+     "text": "Make",
+     "start": 90.12,
+     "end": 90.4,
+     "conf": 0.687
+    },
+    {
+     "text": "it",
+     "start": 90.4,
+     "end": 90.46,
+     "conf": 0.404
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Run it",
+   "start": 90.58,
+   "end": 90.88,
+   "words": [
+    {
+     "text": "Run",
+     "start": 90.58,
+     "end": 90.78,
+     "conf": 0.624
+    },
+    {
+     "text": "it",
+     "start": 90.78,
+     "end": 90.88,
+     "conf": 0.516
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Break it",
+   "start": 91.0,
+   "end": 91.32,
+   "words": [
+    {
+     "text": "Break",
+     "start": 91.0,
+     "end": 91.22,
+     "conf": 0.612
+    },
+    {
+     "text": "it",
+     "start": 91.22,
+     "end": 91.32,
+     "conf": 0.513
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Trace it",
+   "start": 91.42,
+   "end": 91.78,
+   "words": [
+    {
+     "text": "Trace",
+     "start": 91.42,
+     "end": 91.7,
+     "conf": 0.651
+    },
+    {
+     "text": "it",
+     "start": 91.7,
+     "end": 91.78,
+     "conf": 0.41
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Change it",
+   "start": 91.88,
+   "end": 92.28,
+   "words": [
+    {
+     "text": "Change",
+     "start": 91.88,
+     "end": 92.18,
+     "conf": 0.694
+    },
+    {
+     "text": "it",
+     "start": 92.18,
+     "end": 92.28,
+     "conf": 0.4
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Search the evidence",
+   "start": 92.34,
+   "end": 93.12,
+   "words": [
+    {
+     "text": "Search",
+     "start": 92.34,
+     "end": 92.5,
+     "conf": 0.518
+    },
+    {
+     "text": "the",
+     "start": 92.74,
+     "end": 92.82,
+     "conf": 0.097
+    },
+    {
+     "text": "evidence",
+     "start": 92.82,
+     "end": 93.12,
+     "conf": 0.018
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Compare the views",
+   "start": 93.14,
+   "end": 94.06,
+   "words": [
+    {
+     "text": "Compare",
+     "start": 93.14,
+     "end": 93.46,
+     "conf": 0.539
+    },
+    {
+     "text": "the",
+     "start": 93.46,
+     "end": 93.66,
+     "conf": 0.348
+    },
+    {
+     "text": "views",
+     "start": 93.66,
+     "end": 94.06,
+     "conf": 0.684
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "State uncertainty",
+   "start": 94.12,
+   "end": 95.0,
+   "words": [
+    {
+     "text": "State",
+     "start": 94.12,
+     "end": 94.38,
+     "conf": 0.299
+    },
+    {
+     "text": "uncertainty",
+     "start": 94.38,
+     "end": 95.0,
+     "conf": 0.732
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Then choose",
+   "start": 95.24,
+   "end": 95.84,
+   "words": [
+    {
+     "text": "Then",
+     "start": 95.24,
+     "end": 95.44,
+     "conf": 0.809
+    },
+    {
+     "text": "choose",
+     "start": 95.44,
+     "end": 95.84,
+     "conf": 0.647
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Text or image",
+   "start": 95.88,
+   "end": 96.64,
+   "words": [
+    {
+     "text": "Text",
+     "start": 95.88,
+     "end": 96.2,
+     "conf": 0.694
+    },
+    {
+     "text": "or",
+     "start": 96.2,
+     "end": 96.28,
+     "conf": 0.397
+    },
+    {
+     "text": "image",
+     "start": 96.4,
+     "end": 96.64,
+     "conf": 0.32
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Sound or code",
+   "start": 96.68,
+   "end": 97.62,
+   "words": [
+    {
+     "text": "Sound",
+     "start": 96.68,
+     "end": 97.08,
+     "conf": 0.361
+    },
+    {
+     "text": "or",
+     "start": 97.08,
+     "end": 97.2,
+     "conf": 0.348
+    },
+    {
+     "text": "code",
+     "start": 97.2,
+     "end": 97.62,
+     "conf": 0.669
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Keep the context",
+   "start": 97.66,
+   "end": 98.42,
+   "words": [
+    {
+     "text": "Keep",
+     "start": 97.66,
+     "end": 97.9,
+     "conf": 0.608
+    },
+    {
+     "text": "the",
+     "start": 97.9,
+     "end": 98.0,
+     "conf": 0.732
+    },
+    {
+     "text": "context",
+     "start": 98.0,
+     "end": 98.42,
+     "conf": 0.739
+    }
+   ]
+  },
+  {
+   "section": "bridge1",
+   "title": "Bridge \u2014 Half-Time",
+   "text": "Hold the goal",
+   "start": 98.48,
+   "end": 99.36,
+   "words": [
+    {
+     "text": "Hold",
+     "start": 98.48,
+     "end": 98.8,
+     "conf": 0.65
+    },
+    {
+     "text": "the",
+     "start": 98.8,
+     "end": 98.88,
+     "conf": 0.68
+    },
+    {
+     "text": "goal",
+     "start": 99.0,
+     "end": 99.36,
+     "conf": 0.335
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "Call in Opus",
+   "start": 116.26,
+   "end": 117.72,
+   "words": [
+    {
+     "text": "Call",
+     "start": 116.26,
+     "end": 116.94,
+     "conf": 0.225
+    },
+    {
+     "text": "in",
+     "start": 116.94,
+     "end": 117.06,
+     "conf": 0.0
+    },
+    {
+     "text": "Opus",
+     "start": 117.24,
+     "end": 117.72,
+     "conf": 0.375
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "Let the whole machine ignite",
+   "start": 118.56,
+   "end": 120.14,
+   "words": [
+    {
+     "text": "Let",
+     "start": 118.56,
+     "end": 118.72,
+     "conf": 0.0
+    },
+    {
+     "text": "the",
+     "start": 118.72,
+     "end": 118.9,
+     "conf": 0.531
+    },
+    {
+     "text": "whole",
+     "start": 118.9,
+     "end": 119.14,
+     "conf": 0.445
+    },
+    {
+     "text": "machine",
+     "start": 119.14,
+     "end": 119.64,
+     "conf": 0.556
+    },
+    {
+     "text": "ignite",
+     "start": 119.64,
+     "end": 120.14,
+     "conf": 0.43
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "From the first unfinished question",
+   "start": 120.34,
+   "end": 122.04,
+   "words": [
+    {
+     "text": "From",
+     "start": 120.34,
+     "end": 120.58,
+     "conf": 0.382
+    },
+    {
+     "text": "the",
+     "start": 120.58,
+     "end": 120.74,
+     "conf": 0.701
+    },
+    {
+     "text": "first",
+     "start": 120.74,
+     "end": 121.08,
+     "conf": 0.801
+    },
+    {
+     "text": "unfinished",
+     "start": 121.08,
+     "end": 121.54,
+     "conf": 0.322
+    },
+    {
+     "text": "question",
+     "start": 121.54,
+     "end": 122.04,
+     "conf": 0.669
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "To a system running right",
+   "start": 122.1,
+   "end": 123.66,
+   "words": [
+    {
+     "text": "To",
+     "start": 122.1,
+     "end": 122.3,
+     "conf": 0.357
+    },
+    {
+     "text": "a",
+     "start": 122.3,
+     "end": 122.42,
+     "conf": 0.769
+    },
+    {
+     "text": "system",
+     "start": 122.42,
+     "end": 122.82,
+     "conf": 0.829
+    },
+    {
+     "text": "running",
+     "start": 122.96,
+     "end": 123.34,
+     "conf": 0.503
+    },
+    {
+     "text": "right",
+     "start": 123.34,
+     "end": 123.66,
+     "conf": 0.546
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "Call in Opus",
+   "start": 123.92,
+   "end": 124.8,
+   "words": [
+    {
+     "text": "Call",
+     "start": 123.92,
+     "end": 124.14,
+     "conf": 0.05
+    },
+    {
+     "text": "in",
+     "start": 124.14,
+     "end": 124.36,
+     "conf": 0.044
+    },
+    {
+     "text": "Opus",
+     "start": 124.36,
+     "end": 124.8,
+     "conf": 0.404
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "Every layer, every frame",
+   "start": 125.78,
+   "end": 127.4,
+   "words": [
+    {
+     "text": "Every",
+     "start": 125.78,
+     "end": 126.0,
+     "conf": 0.0
+    },
+    {
+     "text": "layer,",
+     "start": 126.0,
+     "end": 126.32,
+     "conf": 0.434
+    },
+    {
+     "text": "every",
+     "start": 126.32,
+     "end": 126.84,
+     "conf": 0.106
+    },
+    {
+     "text": "frame",
+     "start": 126.84,
+     "end": 127.4,
+     "conf": 0.502
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "It can build the world around it",
+   "start": 127.5,
+   "end": 129.16,
+   "words": [
+    {
+     "text": "It",
+     "start": 127.5,
+     "end": 127.62,
+     "conf": 0.0
+    },
+    {
+     "text": "can",
+     "start": 127.62,
+     "end": 127.86,
+     "conf": 0.452
+    },
+    {
+     "text": "build",
+     "start": 127.86,
+     "end": 128.1,
+     "conf": 0.493
+    },
+    {
+     "text": "the",
+     "start": 128.1,
+     "end": 128.22,
+     "conf": 0.731
+    },
+    {
+     "text": "world",
+     "start": 128.22,
+     "end": 128.62,
+     "conf": 0.832
+    },
+    {
+     "text": "around",
+     "start": 128.62,
+     "end": 129.06,
+     "conf": 0.644
+    },
+    {
+     "text": "it",
+     "start": 129.06,
+     "end": 129.16,
+     "conf": 0.399
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "You decide what world to make",
+   "start": 129.28,
+   "end": 131.48,
+   "words": [
+    {
+     "text": "You",
+     "start": 129.28,
+     "end": 129.44,
+     "conf": 0.601
+    },
+    {
+     "text": "decide",
+     "start": 129.44,
+     "end": 130.14,
+     "conf": 0.676
+    },
+    {
+     "text": "what",
+     "start": 130.14,
+     "end": 130.36,
+     "conf": 0.348
+    },
+    {
+     "text": "world",
+     "start": 130.52,
+     "end": 130.98,
+     "conf": 0.571
+    },
+    {
+     "text": "to",
+     "start": 130.98,
+     "end": 131.2,
+     "conf": 0.372
+    },
+    {
+     "text": "make",
+     "start": 131.2,
+     "end": 131.48,
+     "conf": 0.45
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "Call in Opus",
+   "start": 132.3,
+   "end": 133.72,
+   "words": [
+    {
+     "text": "Call",
+     "start": 132.3,
+     "end": 132.78,
+     "conf": 0.35
+    },
+    {
+     "text": "in",
+     "start": 132.92,
+     "end": 133.18,
+     "conf": 0.039
+    },
+    {
+     "text": "Opus",
+     "start": 133.18,
+     "end": 133.72,
+     "conf": 0.425
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "Give it tools and give it time",
+   "start": 134.54,
+   "end": 136.26,
+   "words": [
+    {
+     "text": "Give",
+     "start": 134.54,
+     "end": 134.7,
+     "conf": 0.144
+    },
+    {
+     "text": "it",
+     "start": 134.7,
+     "end": 134.82,
+     "conf": 0.425
+    },
+    {
+     "text": "tools",
+     "start": 134.82,
+     "end": 135.26,
+     "conf": 0.64
+    },
+    {
+     "text": "and",
+     "start": 135.26,
+     "end": 135.42,
+     "conf": 0.611
+    },
+    {
+     "text": "give",
+     "start": 135.42,
+     "end": 135.6,
+     "conf": 0.667
+    },
+    {
+     "text": "it",
+     "start": 135.6,
+     "end": 135.7,
+     "conf": 0.45
+    },
+    {
+     "text": "time",
+     "start": 135.7,
+     "end": 136.26,
+     "conf": 0.786
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "From the prompt to production",
+   "start": 136.3,
+   "end": 138.02,
+   "words": [
+    {
+     "text": "From",
+     "start": 136.3,
+     "end": 136.54,
+     "conf": 0.606
+    },
+    {
+     "text": "the",
+     "start": 136.54,
+     "end": 136.7,
+     "conf": 0.425
+    },
+    {
+     "text": "prompt",
+     "start": 136.7,
+     "end": 137.06,
+     "conf": 0.038
+    },
+    {
+     "text": "to",
+     "start": 137.06,
+     "end": 137.18,
+     "conf": 0.409
+    },
+    {
+     "text": "production",
+     "start": 137.42,
+     "end": 138.02,
+     "conf": 0.598
+    }
+   ]
+  },
+  {
+   "section": "final1",
+   "title": "Final Chorus",
+   "text": "One verified step at a time",
+   "start": 138.2,
+   "end": 146.44,
+   "words": [
+    {
+     "text": "One",
+     "start": 138.2,
+     "end": 138.52,
+     "conf": 0.028
+    },
+    {
+     "text": "verified",
+     "start": 138.52,
+     "end": 139.3,
+     "conf": 0.097
+    },
+    {
+     "text": "step",
+     "start": 139.3,
+     "end": 139.72,
+     "conf": 0.325
+    },
+    {
+     "text": "at",
+     "start": 139.72,
+     "end": 139.94,
+     "conf": 0.35
+    },
+    {
+     "text": "a",
+     "start": 139.94,
+     "end": 140.06,
+     "conf": 0.45
+    },
+    {
+     "text": "time",
+     "start": 140.06,
+     "end": 146.44,
+     "conf": 0.175
+    }
+   ]
+  },
+  {
+   "section": "outro1",
+   "title": "Outro",
+   "text": "Name the goal",
+   "start": 146.5,
+   "end": 147.64,
+   "words": [
+    {
+     "text": "Name",
+     "start": 146.5,
+     "end": 147.0,
+     "conf": 0.42
+    },
+    {
+     "text": "the",
+     "start": 147.0,
+     "end": 147.06,
+     "conf": 0.35
+    },
+    {
+     "text": "goal",
+     "start": 147.18,
+     "end": 147.64,
+     "conf": 0.0
+    }
+   ]
+  },
+  {
+   "section": "outro1",
+   "title": "Outro",
+   "text": "Open the door",
+   "start": 148.36,
+   "end": 149.48,
+   "words": [
+    {
+     "text": "Open",
+     "start": 148.36,
+     "end": 148.74,
+     "conf": 0.066
+    },
+    {
+     "text": "the",
+     "start": 148.74,
+     "end": 148.82,
+     "conf": 0.012
+    },
+    {
+     "text": "door",
+     "start": 148.96,
+     "end": 149.48,
+     "conf": 0.005
+    }
+   ]
+  },
+  {
+   "section": "outro1",
+   "title": "Outro",
+   "text": "Call in Opus",
+   "start": 153.58,
+   "end": 154.96,
+   "words": [
+    {
+     "text": "Call",
+     "start": 153.58,
+     "end": 154.18,
+     "conf": 0.2
+    },
+    {
+     "text": "in",
+     "start": 154.18,
+     "end": 154.5,
+     "conf": 0.0
+    },
+    {
+     "text": "Opus",
+     "start": 154.5,
+     "end": 154.96,
+     "conf": 0.0
+    }
+   ]
+  },
+  {
+   "section": "outro1",
+   "title": "Outro",
+   "text": "Build something more",
+   "start": 157.04,
+   "end": 158.52,
+   "words": [
+    {
+     "text": "Build",
+     "start": 157.04,
+     "end": 157.2,
+     "conf": 0.0
+    },
+    {
+     "text": "something",
+     "start": 157.58,
+     "end": 158.04,
+     "conf": 0.052
+    },
+    {
+     "text": "more",
+     "start": 158.04,
+     "end": 158.52,
+     "conf": 0.065
+    }
+   ]
+  }
+ ]
+}
