@@ -234,7 +234,7 @@ export class DocumentShot extends Shot {
         const x = rig.x(DOC.left) + inst.userData.baseX + rowShift;
         const inside = x > xL - rig.px(40) && x < xR + rig.px(10);
         const kept = fold < 0.5 || gi < rowLen;
-        const sc = alive && kept && (t < tBuild || inside) ? 1 : 0;
+        const sc = alive && kept && (t < tBuild || inside) && closeU < 0.85 ? 1 : 0;
         p.set(x, y, z); s.set(sc, sy * sc, 1);
         mat.compose(p, q, s);
         inst.setMatrixAt(layer, mat);
@@ -243,7 +243,7 @@ export class DocumentShot extends Shot {
       // echo underline
       const ux0 = rig.x(DOC.left), ux1 = ux0 + this.mult.width;
       const cx = Math.max(ux0, xL), cx1 = Math.min(ux1, xR);
-      const lw = alive && cx1 > cx ? cx1 - cx : 0;
+      const lw = alive && cx1 > cx && closeU < 0.85 ? cx1 - cx : 0;
       p.set((cx + cx1) / 2, y - rig.px(UNDERLINE_GAP) * (1 - fold), z); s.set(Math.max(1e-4, lw), rig.px(3), 1);
       mat.compose(p, q, s);
       this.echoLines.setMatrixAt(layer, mat);
@@ -311,7 +311,7 @@ export class DocumentShot extends Shot {
     } else {
       // pulled along by the closing window; becomes the stroke
       const x = lerp(xR - rig.px(30), rig.x(STROKE.x), closeE);
-      this.cursor.pose({ x, y: rig.y(540), z: 0.35, h: lerp(rig.px(60), rig.px(780), inExpo(closeU)), notches: 3, opacity: merge > 0.9 ? 0 : 1 });
+      this.cursor.pose({ x, y: rig.y(540), z: 0.35, h: lerp(rig.px(60), rig.px(780), inExpo(closeU)), w: rig.px(12), notches: 3, opacity: merge > 0.9 ? 0 : 1 });
     }
     f.post.halation = 0.13;
   }

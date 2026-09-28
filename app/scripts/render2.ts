@@ -191,16 +191,20 @@ async function encodeDeliverables(master: string, from: number, to: number, name
   const dur = to - from;
   const aud = ['-ss', from.toFixed(4), '-t', dur.toFixed(4), '-i', audio];
   const tags = ['-color_primaries', 'bt709', '-color_trc', 'bt709', '-colorspace', 'bt709', '-color_range', 'tv'];
-  const afade = ['-af', `afade=t=in:d=0.15,afade=t=out:st=${(dur - 0.3).toFixed(3)}:d=0.3`, '-c:a', 'aac', '-b:a', '320k'];
-  const fade = flag('fade') ? `,fade=t=in:st=0:d=0.15,fade=t=out:st=${(dur - 0.3).toFixed(3)}:d=0.3` : '';
+  // fades clamped to the clip (a clip shorter than a fade must not get a negative start)
+  const fi = Math.min(0.15, dur / 4), fo = Math.min(0.3, dur / 3);
+  const afade = ['-af', `afade=t=in:d=${fi.toFixed(3)},afade=t=out:st=${Math.max(0, dur - fo).toFixed(3)}:d=${fo.toFixed(3)}`, '-c:a', 'aac', '-b:a', '320k'];
+  const fade = flag('fade') ? `,fade=t=in:st=0:d=${fi.toFixed(3)},fade=t=out:st=${Math.max(0, dur - fo).toFixed(3)}:d=${fo.toFixed(3)}` : '';
   const grain = +opt('grain', '5')!;
   // review 1080p: Lanczos down, then fine monochrome grain, BT.709 matrix
   await run(['ffmpeg', '-y', '-loglevel', 'error', '-i', master, ...aud, '-map', '0:v', '-map', '1:a',
-    '-vf', `scale=1920:1080:flags=lanczos+accurate_rnd+full_chroma_int,format=yuv444p,noise=c0s=${grain}:c0f=t+u:all_seed=7${fade},scale=out_color_matrix=bt709:out_range=tv,format=yuv420p`,
+    // one explicit RGB -> Y'CbCr conversion (BT.709, limited range) right after the Lanczos down,
+    // then grain on luma only (monochrome), then 4:2:0
+    '-vf', `scale=1920:1080:flags=lanczos+accurate_rnd+full_chroma_int:out_color_matrix=bt709:out_range=tv,format=yuv444p,noise=c0s=${grain}:c0f=t+u:all_seed=7${fade},format=yuv420p`,
     '-c:v', 'libx264', '-preset', 'slow', '-crf', opt('crf', '12')!, '-x264-params', 'aq-mode=3', ...tags, ...afade, '-movflags', '+faststart', path.join(OUT, `${name}_review_1080p.mp4`)]);
   // 4K high-bitrate
   await run(['ffmpeg', '-y', '-loglevel', 'error', '-i', master, ...aud, '-map', '0:v', '-map', '1:a',
-    '-vf', `format=yuv444p,noise=c0s=${Math.round(grain * 0.8)}:c0f=t+u:all_seed=7${fade},scale=out_color_matrix=bt709:out_range=tv,format=yuv420p`,
+    '-vf', `scale=out_color_matrix=bt709:out_range=tv:flags=accurate_rnd+full_chroma_int,format=yuv444p,noise=c0s=${Math.round(grain * 0.8)}:c0f=t+u:all_seed=7${fade},format=yuv420p`,
     '-c:v', 'libx264', '-preset', 'slow', '-crf', opt('crf', '12')!, '-x264-params', 'aq-mode=3', ...tags, ...afade, '-movflags', '+faststart', path.join(OUT, `${name}_4k.mp4`)]);
   console.log(`wrote ${master}\n      ${path.join(OUT, `${name}_review_1080p.mp4`)}\n      ${path.join(OUT, `${name}_4k.mp4`)}`);
 }

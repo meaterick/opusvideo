@@ -123,7 +123,7 @@ export class OpusShot extends Shot {
     // ---- shot 8 type
     const gt = typeTimes(this.c, 'Give the difficult', 0, 2);
     this.give = new GlyphWord(gt.text, 'mono500', unitR * 56 * 0.73, flat(COL.porcelain));
-    this.give.position.copy(this.R(246, 300, 2));
+    this.give.position.copy(this.R(246, 300, 0.4));
     this.giveTimes = gt.times;
     g.add(this.give);
     const dword = this.c.word('Give the difficult', 2).text.replace(/[^A-Za-z]/g, '');
@@ -242,7 +242,7 @@ export class OpusShot extends Shot {
     const lg = reveal(this.give, t, this.giveTimes);
     this.give.visible = t > tGive - 0.05 && t < tIt - 0.1;
     const dOn = outExpo(prog(t, tDiff - 0.02, tDiff + 0.25));
-    const pull = inExpo(prog(t, tReason - 0.02, tReason + 0.2));   // into the code line
+    const pull = inExpo(prog(t, tReason - 0.06, tReason + 0.12));  // into the code line
     this.diff.visible = t > tDiff - 0.02 && pull < 0.999;
     const codeHome = this.R(246, 700, 0.5);
     const sc = lerp(1, (unitR * 60 * 0.72) / (unitR * 250), pull);
@@ -251,7 +251,7 @@ export class OpusShot extends Shot {
     // depth of field: focus behind the word, rack to the word on "name"
     const rack = inOutCubic(prog(t, tName - 0.02, tName + 0.2));
     if (t > 25.8 && t < tReason) {
-      f.dof = { focus: RD - 0.4 + lerp(4.5, 0, rack), aperture: lerp(0.32, 0.12, rack) };
+      f.dof = { focus: RD - 0.4 + lerp(2.6, 0, rack), aperture: lerp(0.22, 0.1, rack) };
       f.minSamples = 36;
     }
     // brackets lock onto the named word (critically damped)
@@ -289,7 +289,7 @@ export class OpusShot extends Shot {
       w.glyphs.forEach((gg, k) => { gg.scale.set(1, lerp(0.2, 1, springOver(t - t0 - k * 0.018, 30, 0.55)), 1); });
     });
     // code line accumulating below the line: one token per verb (+ the named word first)
-    const tokT = [tReason + 0.2, tWrite, tWrite + 0.18, tBuild];
+    const tokT = [tReason + 0.12, tWrite, tWrite + 0.18, tBuild];
     const codeBase = this.R(246, 700, 0.5);
     const buildT = (i: number) => tBuild + 0.04 + i * (m.P / 4);  // one block per 16th
     this.code.forEach((w, i) => {
@@ -334,8 +334,10 @@ export class OpusShot extends Shot {
       this.cursor.visible = false;
       this.emberLight.intensity = 0;
     } else if (t < tIt) {
-      const g0 = this.give.visible ? this.give : this.aName;
-      const idx = this.give.visible ? lg : an;
+      // anchor chosen by time (not visibility): no jump inside the shutter
+      const onName = t >= this.aNameTimes[0] - 0.05;
+      const g0 = onName ? this.aName : this.give;
+      const idx = onName ? an : lg;
       const x = g0.position.x + caretAfter(g0, idx) + unitR * 10;
       this.cursor.pose({ x, y: g0.position.y + unitR * 22, z: g0.position.z + 0.05, h: unitR * 62, notches: 4, opacity: idx < 0 ? blink2(bp) : 1 });
       this.emberLight.intensity = 0;

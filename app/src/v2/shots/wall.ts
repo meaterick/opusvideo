@@ -78,6 +78,12 @@ export class WallShot extends Shot {
     this.base = new Ribbon(inkMat, HAIR).setPoints([new THREE.Vector3(-14, G, 0.004), new THREE.Vector3(CX2 + 14, G, 0.004)]);
     this.cap = new Ribbon(inkMat, HAIR).setPoints([new THREE.Vector3(XL - rig.px(60), G + CAP, 0.004), new THREE.Vector3(this.liveBoxes[3].maxX + rig.px(60), G + CAP, 0.004)]);
     g.add(this.base, this.cap);
+    // the sheet is already set up when the PoC opens: faint guides (cap line,
+    // glyph boxes) that the pen then redraws in full ink
+    const ghost = flat(new THREE.Color('#2a3038'));
+    const ghostPts: THREE.Vector3[][] = [[new THREE.Vector3(XL - rig.px(60), G + CAP, 0.003), new THREE.Vector3(this.liveBoxes[3].maxX + rig.px(60), G + CAP, 0.003)]];
+    for (const b of this.liveBoxes) for (const x of [b.minX, b.maxX]) ghostPts.push([new THREE.Vector3(x, G - rig.px(34), 0.003), new THREE.Vector3(x, G + CAP + rig.px(34), 0.003)]);
+    for (const pts of ghostPts) g.add(new Ribbon(ghost, HAIR, undefined, 4).setPoints(pts).draw(1));
     for (const b of this.liveBoxes) for (const x of [b.minX, b.maxX]) {
       const r = new Ribbon(inkMat, HAIR).setPoints([new THREE.Vector3(x, G - rig.px(34), 0.004), new THREE.Vector3(x, G + CAP + rig.px(34), 0.004)]);
       this.verticals.push(r); g.add(r);
@@ -236,7 +242,7 @@ export class WallShot extends Shot {
     this.verticals.forEach((r, k) => r.draw(outExpo(prog(t, tFrom + 0.1 + (k >> 1) * 0.11 + (k & 1) * 0.04, tFrom + 0.28 + (k >> 1) * 0.11 + (k & 1) * 0.04))));
     this.dims.forEach((r, k) => r.draw(outExpo(prog(t, tFrom + 0.2 + k * 0.05, tFrom + 0.4 + k * 0.05))));
     this.dimLabel.visible = t > tFrom + 0.35;
-    this.dwg.visible = t > tFrom + 0.45;
+    this.dwg.visible = true; // the sheet's drawing number is there from the start
     // title block typed with the words (stepped per character across each word)
     const tl = c.m.line(c.line('From a sketch'));
     const starts: number[] = [];
