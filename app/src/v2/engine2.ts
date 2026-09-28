@@ -165,7 +165,7 @@ export class Engine2 {
 
   /** Evaluate every active shot at time t; returns the frame state. */
   private evaluate(t: number): F2 {
-    const f: F2 = { t, m: this.m, cam: this.cam, post: this.defaults(), aspect: LW / LH, dof: null, minSamples: 0, lightTarget: new THREE.Vector3() };
+    const f: F2 = { t, tf: this.frameT ?? t, m: this.m, cam: this.cam, post: this.defaults(), aspect: LW / LH, dof: null, minSamples: 0, lightTarget: new THREE.Vector3() };
     for (const s of this.shots) s.group.visible = false;
     this.cam.position.set(0, 0, 10); this.cam.up.set(0, 1, 0); this.cam.lookAt(0, 0, 0); this.cam.fov = 30; this.cam.clearViewOffset();
     for (const s of this.active(t)) {
@@ -237,10 +237,14 @@ export class Engine2 {
     return ts;
   }
 
+  /** Time of the frame being rendered (see F2.tf). */
+  private frameT: number | undefined;
+
   /** Render the frame for song time t (and frame number for seeding). */
   render(t: number, frame: number, o: RenderOpts = { samples: 1, shutter: 0.18, fps: 60 }) {
     const shutterSec = o.shutter / o.fps;
     let n: number;
+    this.frameT = t;
     const fProbe = this.evaluate(t); // also tells us the shot's minimum
     if (o.samples === 'auto') {
       const d = this.motion(t, shutterSec);
@@ -269,6 +273,7 @@ export class Engine2 {
     }
     this.renderer.setClearColor(0x000000, 1);
     this.postProcess(post, frame);
+    this.frameT = undefined;
     return n;
   }
 

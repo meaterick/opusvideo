@@ -339,7 +339,7 @@ export class WallShot extends Shot {
     });
     this.opt.position.set(0, 0, 0);
     // counter: stepped values through "optimize"
-    const ci = t < tOpt ? 0 : Math.min(4, Math.floor(prog(t, tOpt, tOptEnd) * 5));
+    const ci = f.tf < tOpt ? 0 : Math.min(4, Math.floor(prog(f.tf, tOpt, tOptEnd) * 5)); // discrete: frame time
     this.counters.forEach((w, i) => { w.visible = t > tOne && i === ci && lift < 0.3; });
     this.counterLabel.visible = t > tOne && lift < 0.3;
     // "One more pass," typed with the words

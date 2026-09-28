@@ -205,8 +205,10 @@ export class DocumentShot extends Shot {
     this.mult.position.z = (1 - slam) * 2.5;
     // layers double on each beat of the held note: x1 x2 x4 x8 x16 x32
     const beatsIn = [tMult, m.snap(tMult + 0.5), m.snap(tMult + 0.5) + m.P, m.snap(tMult + 0.5) + 2 * m.P, m.snap(tMult + 0.5) + 3 * m.P, 18.5];
+    // the generation is discrete (the counter shows it): chosen at the frame's
+    // time, so a doubling never blends two counter states within one frame
     let gen = 0;
-    for (let i = 0; i < beatsIn.length; i++) if (t >= beatsIn[i]) gen = i;
+    for (let i = 0; i < beatsIn.length; i++) if (f.tf >= beatsIn[i]) gen = i;
     const n = multOn ? Math.pow(2, gen) : 0;
     const bornAt = (layer: number) => { for (let i = 0; i < beatsIn.length; i++) if (layer < Math.pow(2, i)) return beatsIn[i]; return 99; };
     // fold into the window: echoes come forward (inExpo) and flatten into rows

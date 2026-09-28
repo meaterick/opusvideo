@@ -17,6 +17,10 @@ export interface Post2 {
 
 export interface F2 {
   t: number;
+  /** the time the frame stands for (its shutter centre), the same for all of
+   *  its temporal samples.  Discrete graphics (counters, numerals) choose
+   *  their state from this, so a step never blends two states in one frame. */
+  tf: number;
   m: Music;
   cam: THREE.PerspectiveCamera;
   post: Post2;

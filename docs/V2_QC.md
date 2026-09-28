@@ -221,3 +221,8 @@ at 960 px / 8 samples and reviewed every 4th frame.
 | 21.0–23.3 | Flattened echo glyphs stuck out past the right rail as thin tapered slivers. Only the glyph's origin was tested against the rails. | A row glyph shows only when its whole advance sits between the rails. |
 | 21.0–23.3 | A CONTEXT letter's right half crossed the right rail until the letter's centre reached it (the T's crossbar at 22.9). | The rails squeeze the letters: once a rail enters a letter, the letter is compressed against it, anchored at its far edge, and never drawn past it. The window visibly crushes CONTEXT down to "CON". |
 | 21.4 | The left rail passed over the "G" of "Give it" and the "l" of "let it try". | The rail wipes each line away as it reaches it. |
+| 18.50 (frame 1110) | Seen in the 4K POC render: the layer counter read "×38" because the ×16 → ×32 step (18.5 s) fell inside the 3 ms shutter, and the two numerals blended. (A check of every other stepped counter found only this one step inside a shutter.) | Frames now carry the time they stand for (`F2.tf`, their shutter centre). Discrete graphics (both counters) choose their state from it, so a step lands on a frame boundary and never blends. |
+
+Cross-run determinism: frames 720, 800, 870, 950, 980 and 985 of the POC render are bit-identical
+(SHA-256 of the RGB pixels) to the same frames of the typography test, which was rendered hours earlier
+in a different browser process.
