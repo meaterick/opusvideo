@@ -288,9 +288,12 @@ export class DocumentShot extends Shot {
       const adv = this.ctx.advance(i);
       const x0 = this.ctx.position.x + this.ctx.baseX(i), x1 = x0 + adv; // pen box, world
       const a = Math.max(x0, xL), b = Math.min(x1, xR);
-      const sq = Math.max(0, b - a) / adv;
+      const inside = a === x0 && b === x1;
+      const sq = inside ? 1 : Math.max(0, b - a) / adv;
       gg.scale.set(sq, 1, 1);
-      gg.position.x = a - this.ctx.position.x;
+      // anchored at the edge no rail has reached (x0, else x1); fitted to the
+      // window when both rails are inside the letter
+      gg.position.x = (a === x0 ? x0 : b === x1 ? x1 - sq * adv : a) - this.ctx.position.x;
       gg.visible = sq > 0.02;
     });
     // "let it try": the cursor's first output line
