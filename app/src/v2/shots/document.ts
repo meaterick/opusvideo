@@ -95,6 +95,7 @@ export class DocumentShot extends Shot {
       const inst = new THREE.InstancedMesh(mesh.geometry, new THREE.MeshBasicMaterial({ color: 0xffffff, toneMapped: false }), LAYERS + 1);
       inst.instanceColor = new THREE.InstancedBufferAttribute(new Float32Array((LAYERS + 1) * 3), 3);
       inst.userData.baseX = flatWord.baseX(i);
+      inst.userData.adv = flatWord.advance(i);
       inst.frustumCulled = false;
       this.echoes.push(inst); g.add(inst);
     });
@@ -240,7 +241,9 @@ export class DocumentShot extends Shot {
       col.copy(COL.porcelain).multiplyScalar(0.55 * shade + 0.05).lerp(INK, fold * 0.55);
       this.echoes.forEach((inst, gi) => {
         const x = rig.x(DOC.left) + inst.userData.baseX + rowShift;
-        const inside = x > xL - rig.px(40) && x < xR + rig.px(10);
+        // the whole glyph must sit between the rails (testing only its origin
+        // let flattened glyphs stick out past the right rail as slivers)
+        const inside = x > xL - rig.px(2) && x + inst.userData.adv < xR + rig.px(2);
         const kept = fold < 0.5 || gi < rowLen;
         const sc = alive && kept && (t < tBuild || inside) && closeU < 0.85 ? 1 : 0;
         p.set(x, y, z); s.set(sc, sy * sc, 1);
@@ -269,25 +272,28 @@ export class DocumentShot extends Shot {
     this.rails.forEach((r) => { r.visible = railsVisible && railsIn > 0.001; });
     this.corners.forEach((r, i) => { r.draw(Math.max(1e-4, outExpo(prog(t, tFolded - 0.1 + i * 0.03, tFolded + 0.15 + i * 0.03)))); r.visible = r.visible && railsVisible && t > tFolded - 0.1 && closeU < 0.05; });
     const lg = reveal(this.give, t, this.giveTimes);
-    this.give.visible = t > tGive - 0.05 && closeU < 0.2;
+    this.give.visible = t > tGive - 0.05 && closeU < 0.2 && xL < this.give.position.x - rig.px(6); // wiped by the rail
     // CONTEXT slams in; letters are pulled into the closing rails
     const ctxOn = t >= tCtx - 0.02;
     const cs = springOver(t - tCtx + 0.02, 32, 0.5);
     this.ctx.visible = ctxOn && t < tCollapse;
     this.ctx.position.z = 0.2 + (1 - cs) * 3;
+    // the rails squeeze the letters: once a rail enters a letter, the letter is
+    // compressed against it (anchored at its far edge) and never drawn past it
     this.ctx.glyphs.forEach((gg, i) => {
-      const cxw = this.ctx.position.x + this.ctx.centerX(i);
-      const outL = xL - cxw, outR = cxw - xR;
-      const pull = inExpo(clamp01(Math.max(outL, outR, -1) / rig.px(60) + 0.5));
-      const toX = outL > outR ? xL : xR;
-      gg.position.x = lerp(this.ctx.baseX(i), toX - this.ctx.position.x - this.ctx.advance(i) / 2, pull);
-      gg.scale.set(1 - pull, 1, 1);
-      gg.visible = pull < 0.98;
+      const adv = this.ctx.advance(i);
+      const x0 = this.ctx.position.x + this.ctx.baseX(i), x1 = x0 + adv; // pen box, world
+      const sR = clamp01((xR - x0) / adv), sL = clamp01((x1 - xL) / adv);
+      const sq = Math.min(sR, sL);
+      gg.scale.set(sq, 1, 1);
+      gg.position.x = (sR <= sL ? x0 : x1 - sq * adv) - this.ctx.position.x;
+      gg.visible = sq > 0.02;
     });
     // "let it try": the cursor's first output line
     const ly = reveal(this.tryLine, t, this.tryTimes);
-    this.tryLine.visible = t > tLet - 0.05 && closeU < 0.3;
-    this.tick.visible = t > tTry && closeU < 0.3;
+    const tryClear = xL < this.tryLine.position.x - rig.px(6);
+    this.tryLine.visible = t > tLet - 0.05 && closeU < 0.3 && tryClear;
+    this.tick.visible = t > tTry && closeU < 0.3 && tryClear;
     this.tick.position.set(this.tryLine.position.x + caretAfter(this.tryLine, this.tryLine.glyphs.length - 1) + rig.px(24), this.tryLine.position.y + rig.px(20), 0.32);
     // the stroke: at the end of the build the rails are one ember line
     // lit only once the rails have met (the last 8th's ease is done), so the

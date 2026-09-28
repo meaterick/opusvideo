@@ -210,3 +210,14 @@ Audio cross-correlation places the MP4's audio at song t = 11.8000 s. The stream
 | technical quality | 9 | Native 4K, adaptive 12–108 samples, a clean cut at 903, BT.709, and audio at 0 ms offset. |
 
 Both motion tests clear 8 in every category, so the full POC is rendered next.
+
+## Stage 5 — POC ranges not covered by the motion tests (low-res motion preview)
+
+Before the 4K POC, the ranges no test covered (11.03–11.80, 16.80–23.20, 28.20–29.96) were rendered
+at 960 px / 8 samples and reviewed every 4th frame.
+
+| time | defect | fix |
+|---|---|---|
+| 21.0–23.3 | Flattened echo glyphs stuck out past the right rail as thin tapered slivers. Only the glyph's origin was tested against the rails. | A row glyph shows only when its whole advance sits between the rails. |
+| 21.0–23.3 | A CONTEXT letter's right half crossed the right rail until the letter's centre reached it (the T's crossbar at 22.9). | The rails squeeze the letters: once a rail enters a letter, the letter is compressed against it, anchored at its far edge, and never drawn past it. The window visibly crushes CONTEXT down to "CON". |
+| 21.4 | The left rail passed over the "G" of "Give it" and the "l" of "let it try". | The rail wipes each line away as it reaches it. |
