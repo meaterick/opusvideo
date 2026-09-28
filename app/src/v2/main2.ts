@@ -2,6 +2,7 @@
 // data, cues, shots -> Engine2.  Export mode exposes window.__ov for
 // scripts/render2.ts; the first frame is only allowed once every font, data
 // file and shot geometry is loaded (window.__ov.assets reports what loaded).
+import * as THREE from 'three';
 import { loadMusic } from '../engine/data';
 import { loadFonts } from '../engine/type';
 import { loadGlyphFonts } from './glyphs';
@@ -29,8 +30,9 @@ export type V2 = Awaited<ReturnType<typeof bootV2>>;
 /** Export API for scripts/render2.ts. */
 export function exposeV2(v: V2) {
   const { eng } = v;
+  (window as any).__THREE = THREE;
   Object.assign(window.__ov, {
-    ready: true, v: 2, width: v.W, height: v.H, duration: v.m.a.duration, errors: eng.errors, poc: v.poc, assets: v.assets,
+    ready: true, v: 2, eng, width: v.W, height: v.H, duration: v.m.a.duration, errors: eng.errors, poc: v.poc, assets: v.assets,
     shots: v.shots.map((s) => ({ id: s.id, start: s.start, end: s.end, capability: s.capability })),
     /** Render one frame into the canvas; returns the sample count used. */
     frame(t: number, frame: number, samples: number | 'auto', shutter = 0.18, fps = 60) {

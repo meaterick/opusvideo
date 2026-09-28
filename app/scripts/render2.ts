@@ -12,7 +12,11 @@
 //           x264 CRF 12) and <name>_4k.mp4 (x264 CRF 12), both with the song's audio.
 //   verify  --t 24.5 [--samples auto]   renders the same timestamp twice (other frames in
 //           between) and compares SHA-256 of the pixels; also reports assets loaded
-//   perf    --t 12.9 [--samples 1]
+//   perf    --t 12.9 [--samples 1]        one frame, wall time
+//   prof    --t 24.45                     per-stage cost (sample, env, accum, post, probe, per mesh)
+//
+// GL: on Linux with Xvfb installed the default is ANGLE->GL (Mesa llvmpipe) in a private
+// Xvfb display; --gl angle=swiftshader forces SwiftShader.
 //
 // Needs ffmpeg (libx264, ffv1) and Chromium (Playwright's, or $CHROME_PATH).
 import { chromium, type Page } from 'playwright-core';
@@ -49,11 +53,25 @@ function findChrome() {
   }
   return undefined;
 }
+let xvfb: ReturnType<typeof Bun.spawn> | null = null;
 async function openPage(url: string) {
   const exe = findChrome();
-  const gl = opt('gl', process.platform === 'darwin' ? 'angle=metal' : 'angle=swiftshader')!;
+  // GL backend.  On a GPU-less Linux box the default is ANGLE on desktop GL,
+  // which resolves to Mesa llvmpipe inside a private Xvfb display: measured
+  // ~7x faster than SwiftShader at 4K, same image (mean diff < 0.1 level,
+  // differences only in sub-pixel edge coverage).  --gl angle=swiftshader
+  // restores the old path.
+  const gl = opt('gl', process.platform === 'darwin' ? 'angle=metal' : existsSync('/usr/bin/Xvfb') ? 'angle=gl' : 'angle=swiftshader')!;
   const glArgs = gl === 'angle=swiftshader' ? ['--use-angle=swiftshader', '--enable-unsafe-swiftshader'] : [`--use-${gl}`];
-  const browser = await chromium.launch({ ...(exe ? { executablePath: exe } : { channel: 'chrome' }), headless: true,
+  let env: Record<string, string> | undefined, headless = true;
+  if (gl === 'angle=gl' && process.platform === 'linux') {
+    const disp = `:${90 + Math.floor(Math.random() * 400)}`;
+    xvfb = Bun.spawn(['Xvfb', disp, '-screen', '0', '1920x1080x24', '-nolisten', 'tcp'], { stdout: 'ignore', stderr: 'ignore' });
+    for (let i = 0; i < 50 && !existsSync(`/tmp/.X11-unix/X${disp.slice(1)}`); i++) await Bun.sleep(100);
+    env = { ...process.env, DISPLAY: disp } as Record<string, string>;
+    headless = false;
+  }
+  const browser = await chromium.launch({ ...(exe ? { executablePath: exe } : { channel: 'chrome' }), headless, env,
     args: [...glArgs, '--ignore-gpu-blocklist', '--disable-background-timer-throttling', '--disable-renderer-backgrounding', '--disable-backgrounding-occluded-windows'] });
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
   const logs: string[] = [];
@@ -68,7 +86,8 @@ async function openPage(url: string) {
   if (st.errors.length) throw new Error('shot errors:\n' + st.errors.join('\n'));
   if (st.w !== W) throw new Error(`renders ${st.w}px wide, expected ${W}`);
   if (st.assets.fontsStatus !== 'loaded' || st.assets.glyphFonts < 7) throw new Error(`assets not ready: ${JSON.stringify(st.assets)}`);
-  console.log(`webgl: swiftshader=${gl.includes('swiftshader')}  size ${W}x${H}  assets ${JSON.stringify(st.assets)}`);
+  const renderer = await page.evaluate(() => { const g = document.createElement('canvas').getContext('webgl2')!; const e = g.getExtension('WEBGL_debug_renderer_info'); return e ? g.getParameter(e.UNMASKED_RENDERER_WEBGL) : g.getParameter(g.RENDERER); });
+  console.log(`webgl: ${renderer}  size ${W}x${H}  assets ${JSON.stringify(st.assets)}`);
   return { browser, page, logs };
 }
 async function shotErrors(page: Page) {
@@ -236,9 +255,61 @@ try {
   else if (mode === 'perf') {
     const ms = await page.evaluate(([t, s]) => { const O = (window as any).__ov; const a = performance.now(); const n = O.frame(t, 1, s); const px = new Uint8Array(4); const c = document.getElementById('c') as HTMLCanvasElement; (c.getContext('webgl2') as WebGL2RenderingContext).readPixels(0, 0, 1, 1, 0x1908, 0x1401, px); return [performance.now() - a, n, O.probe()]; }, [times[0] ?? 12.9, SAMPLES] as const);
     console.log(`t=${times[0]}: ${(ms[0] as number).toFixed(0)} ms for ${ms[1]} samples (probe ${(+ms[2]).toFixed(2)})`);
+  } else if (mode === 'prof') {
+    // per-stage cost breakdown at one timestamp (GPU work is forced to finish with a 1px readback)
+    const r = await page.evaluate((t) => {
+      const O = (window as any).__ov, e = O.eng, gl = e.renderer.getContext() as WebGL2RenderingContext;
+      const px = new Uint8Array(4);
+      const probe = new Float32Array(4);
+      const fin = () => { e.renderer.readRenderTargetPixels(e.sampleRT, 0, 0, 1, 1, probe); e.renderer.readRenderTargetPixels(e.accRT, 0, 0, 1, 1, probe); e.renderer.setRenderTarget(null); gl.readPixels(0, 0, 1, 1, gl.RGBA, gl.UNSIGNED_BYTE, px); gl.finish(); };
+      const time = (f: () => void, k = 3) => { f(); fin(); const a = performance.now(); for (let i = 0; i < k; i++) f(); fin(); return (performance.now() - a) / k; };
+      const out: Record<string, number> = {};
+      out.evaluate = time(() => e.evaluate(t), 5);
+      out.sample = time(() => e.sample(t, 3, 12, 1, e.sampleRT, true));
+      e.renderer.shadowMap.autoUpdate = false;
+      out.sampleNoShadowUpdate = time(() => e.sample(t, 3, 12, 1, e.sampleRT, true));
+      e.renderer.shadowMap.autoUpdate = true;
+      e.renderer.shadowMap.enabled = false;
+      out.sampleNoShadows = time(() => e.sample(t, 3, 12, 1, e.sampleRT, true));
+      e.renderer.shadowMap.enabled = true;
+      const THREE = (window as any).__THREE;
+      if (THREE) {
+        e.world.overrideMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+        out.sampleBasic = time(() => e.sample(t, 3, 12, 1, e.sampleRT, true));
+        e.world.overrideMaterial = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.5 });
+        out.sampleStandard = time(() => e.sample(t, 3, 12, 1, e.sampleRT, true));
+        e.world.overrideMaterial = null;
+      }
+      const mats = new Set<any>();
+      e.world.traverse((o: any) => { if (o.isMesh) for (const m of [o.material].flat()) mats.add(m); });
+      const saved = new Map<any, any>();
+      for (const m of mats) if (m.envMap) { saved.set(m, m.envMap); m.envMap = null; m.needsUpdate = true; }
+      e.sample(t, 3, 12, 1, e.sampleRT, true); fin();
+      out.sampleNoEnv = time(() => e.sample(t, 3, 12, 1, e.sampleRT, true));
+      for (const [m, v] of saved) { m.envMap = v; m.needsUpdate = true; }
+      e.sample(t, 3, 12, 1, e.sampleRT, true); fin();
+      out.sampleEnvBack = time(() => e.sample(t, 3, 12, 1, e.sampleRT, true));
+      const costs: [string, number][] = [];
+      const seen = new Set<any>();
+      e.world.traverseVisible((o: any) => { if (o.isMesh && !seen.has(o)) seen.add(o); });
+      for (const o of seen) { o.visible = false; const c = time(() => e.sample(t, 3, 12, 1, e.sampleRT, true), 1); o.visible = true; costs.push([`${o.name || o.material?.type}/${o.geometry?.type}/${o.parent?.name}`, c]); }
+      (out as any).perMesh = costs;
+      out.accum = time(() => { e.accum.u.src.value = e.sampleRT.texture; e.accum.u.w.value = 0; e.accum.run(e.renderer, e.accRT); });
+      out.post = time(() => e.postProcess(e.defaults(), 1));
+      out.motion = time(() => e.motion(t, 0.003), 2);
+      const buf = new Uint8Array(e.W * e.H * 4);
+      out.read = time(() => e.read(buf), 2);
+      let tris = 0, meshes = 0, lights = 0;
+      e.world.traverseVisible((o: any) => { if (o.isMesh) { meshes++; const g = o.geometry; tris += (g.index ? g.index.count : g.attributes.position?.count ?? 0) / 3 * (o.count ?? 1); } if (o.isLight) lights++; });
+      out.meshes = meshes; out.ktris = tris / 1000; out.lights = lights;
+      return out;
+    }, times[0] ?? 24.0);
+    console.log(`t=${times[0]} ${W}x${H}`);
+    for (const [k, v] of Object.entries(r)) console.log(`  ${k.padEnd(22)} ${typeof v === 'number' ? v.toFixed(1) : JSON.stringify(v)}`);
   } else throw new Error(`unknown mode ${mode}`);
   if (logs.length) console.log('browser log:\n' + logs.slice(0, 20).join('\n'));
 } finally {
   await browser.close();
   stop();
+  xvfb?.kill();
 }

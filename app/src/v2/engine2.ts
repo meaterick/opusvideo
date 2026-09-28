@@ -16,7 +16,7 @@
 import * as THREE from 'three';
 import type { Music } from '../engine/data';
 import type { F2, Post2, Shot } from './shot';
-import { environment, shared } from './materials';
+import { environment, environmentSH, shared } from './materials';
 import { halton, hash2 } from './motion';
 
 export const LW = 1920, LH = 1080; // logical layout frame (shots are designed at 1080p)
@@ -143,6 +143,7 @@ export class Engine2 {
       res: { value: new THREE.Vector2(W, H) }, seed: { value: 0 },
     });
     const env = environment(this.renderer);
+    environmentSH(this.renderer);
     this.world.background = new THREE.Color('#0a0c10');
     for (const s of shots) {
       try { s.build({ renderer: this.renderer, env }); } catch (e) { this.errors.push(`${s.id}.build: ${(e as Error).stack}`); }
@@ -155,7 +156,7 @@ export class Engine2 {
     // look).  Assigning envMap per material makes each envMapIntensity count.
     this.world.traverse((o: any) => {
       const mats = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : [];
-      for (const m of mats) if (m.isMeshStandardMaterial && !m.envMap) { m.envMap = env; m.needsUpdate = true; }
+      for (const m of mats) if (m.isMeshStandardMaterial && !m.envMap && !m.userData.envSH) { m.envMap = env; m.needsUpdate = true; }
     });
   }
 

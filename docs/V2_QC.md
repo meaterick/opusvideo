@@ -68,3 +68,31 @@ changed the following:
 
 \* Motion is scored on the motion tests, not on stills. Sync for a still means the state shown is the one the
 measured onset calls for at that time.
+
+## Stage 2 — render cost (found when the first 4K motion test ran at 47 s/frame)
+
+At that rate the 5 s chorus test would take ~4 h and the POC ~15 h. The segment was stopped
+and each stage was profiled at 4K with `render2 prof`, forcing GPU sync with a readback of
+every target:
+
+| stage (t = 24.0, SwiftShader) | ms |
+|---|---|
+| one temporal sample | 3 140 |
+| … with every material overridden by MeshStandard (no env) | 930 |
+| … with envMaps removed | 1 180 |
+| … without shadow maps | 3 290 (no gain) |
+| accumulate one sample | 115 |
+| post chain (per frame) | 860 |
+| motion probe (per frame) | 80 |
+
+The studio environment (PMREM lookups) was two thirds of every sample, mostly on the two
+big graphite planes, which use it at 0.12 intensity. Chrome was already at ~390 % CPU on 4
+cores, so running segments in parallel could not help.
+
+| fix | effect |
+|---|---|
+| Graphite takes the same studio as order-2 spherical harmonics (projected once from RoomEnvironment, `environmentSH`) instead of PMREM lookups. | sample 3.1 → 1.2 s. Image: max 1/255 difference on 7 test frames (mean −0.05 to −0.5 levels). |
+| GL backend: ANGLE → desktop GL → Mesa llvmpipe in a private Xvfb, instead of SwiftShader. | A 36-sample 4K frame drops from ~60 s to 9.3 s. Image: mean difference < 0.1 level; 0.2 % of pixels differ > 4 levels, all at sub-pixel edge coverage of thin lines (a different rasterizer); a 4× crop is indistinguishable. Determinism re-verified at 4K (identical SHA-256). |
+
+Net effect: 4K native at the mandated sample counts is affordable, so the motion tests and the
+POC render at 3840×2160 and no 1080 fallback is needed.

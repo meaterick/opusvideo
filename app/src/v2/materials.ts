@@ -28,10 +28,21 @@ export const COL = {
   annotation: new THREE.Color('#8b93a1'),
 };
 
-export const shared = { groundY: { value: -1000 }, grainScale: { value: 38 } };
+export const shared = {
+  groundY: { value: -1000 }, grainScale: { value: 38 },
+  /** studio environment as order-2 spherical harmonics (see environmentSH) */
+  envSH: { value: Array.from({ length: 9 }, () => new THREE.Vector3()) },
+};
 
-function inject(mat: THREE.MeshStandardMaterial, opts: { wrap?: number; grain?: number; ao?: number; aoHeight?: number }) {
+function inject(mat: THREE.MeshStandardMaterial, opts: { wrap?: number; grain?: number; ao?: number; aoHeight?: number; sh?: boolean }) {
+  // sh: rough dielectrics take the studio environment from spherical
+  // harmonics instead of the PMREM (the engine skips them when assigning
+  // envMap).  At roughness >= 0.8 the PMREM lookup is effectively irradiance,
+  // and in SwiftShader it was 2/3 of the per-sample cost on the big planes.
+  if (opts.sh) mat.userData.envSH = true;
   mat.onBeforeCompile = (sh) => {
+    sh.uniforms.v2sh = shared.envSH;
+    sh.uniforms.v2envK = { value: mat.envMapIntensity };
     sh.uniforms.groundY = shared.groundY;
     sh.uniforms.grainScale = shared.grainScale;
     sh.uniforms.wrapAmt = { value: opts.wrap ?? 0 };
@@ -46,10 +57,18 @@ function inject(mat: THREE.MeshStandardMaterial, opts: { wrap?: number; grain?: 
         varying vec3 vWorldPosV2;
         uniform float groundY; uniform float grainScale; uniform float wrapAmt; uniform float grainAmt;
         uniform float aoAmt; uniform float aoHeight;
+        uniform vec3 v2sh[9]; uniform float v2envK;
         float v2hash(vec3 p){ p = fract(p * 0.3183099 + 0.1); p *= 17.0; return fract(p.x * p.y * p.z * (p.x + p.y + p.z)); }
         float v2noise(vec3 p){ vec3 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
           return mix(mix(mix(v2hash(i), v2hash(i+vec3(1,0,0)), f.x), mix(v2hash(i+vec3(0,1,0)), v2hash(i+vec3(1,1,0)), f.x), f.y),
                      mix(mix(v2hash(i+vec3(0,0,1)), v2hash(i+vec3(1,0,1)), f.x), mix(v2hash(i+vec3(0,1,1)), v2hash(i+vec3(1,1,1)), f.x), f.y), f.z); }`)
+      .replace('#include <lights_fragment_maps>', opts.sh ? `#include <lights_fragment_maps>
+        {
+          vec3 wN = inverseTransformDirection(geometryNormal, viewMatrix);
+          iblIrradiance += shGetIrradianceAt(wN, v2sh) * v2envK;
+          vec3 rV = normalize(mix(reflect(-geometryViewDir, geometryNormal), geometryNormal, material.roughness * material.roughness));
+          radiance += shGetIrradianceAt(inverseTransformDirection(rV, viewMatrix), v2sh) * (v2envK * RECIPROCAL_PI);
+        }` : '#include <lights_fragment_maps>')
       // grain: modulate albedo and roughness in world space (stable under camera motion)
       .replace('#include <color_fragment>', `#include <color_fragment>
         float gn = v2noise(vWorldPosV2 * grainScale) * 0.6 + v2noise(vWorldPosV2 * grainScale * 3.7) * 0.4;
@@ -62,12 +81,12 @@ function inject(mat: THREE.MeshStandardMaterial, opts: { wrap?: number; grain?: 
       .replace('#include <lights_fragment_end>', `#include <lights_fragment_end>
         reflectedLight.directDiffuse += diffuseColor.rgb * wrapAmt * 0.18;`);
   };
-  mat.customProgramCacheKey = () => `v2-${opts.wrap ?? 0}-${opts.grain ?? 0}-${opts.ao ?? 0.55}-${opts.aoHeight ?? 0.35}`;
+  mat.customProgramCacheKey = () => `v2-${opts.sh ? 'sh' : 'pm'}-${mat.envMapIntensity}-${opts.wrap ?? 0}-${opts.grain ?? 0}-${opts.ao ?? 0.55}-${opts.aoHeight ?? 0.35}`;
   return mat;
 }
 
 export function graphite(color = COL.graphite, rough = 0.88) {
-  return inject(new THREE.MeshStandardMaterial({ color: color.clone(), roughness: rough, metalness: 0.0, envMapIntensity: 0.12 }), { grain: 0.45, ao: 0.6, aoHeight: 0.6 });
+  return inject(new THREE.MeshStandardMaterial({ color: color.clone(), roughness: rough, metalness: 0.0, envMapIntensity: 0.12 }), { grain: 0.45, ao: 0.6, aoHeight: 0.6, sh: true });
 }
 export function porcelain(color = COL.porcelain) {
   return inject(new THREE.MeshPhysicalMaterial({ color: color.clone(), roughness: 0.5, metalness: 0.0, envMapIntensity: 0.22, clearcoat: 0.35, clearcoatRoughness: 0.24 }), { wrap: 1, grain: 0.03, ao: 0.5, aoHeight: 0.25 });
@@ -147,4 +166,58 @@ export function environment(r: THREE.WebGLRenderer) {
   envTex = pm.fromScene(new RoomEnvironment(), 0.04).texture;
   pm.dispose();
   return envTex;
+}
+
+/**
+ * Project the same studio (RoomEnvironment) onto order-2 spherical harmonics,
+ * synchronously, into shared.envSH.  Irradiance from these matches
+ * getIBLIrradiance of the PMREM (both return E, pi included).  Mirrors
+ * three's LightProbeGenerator.fromCubeRenderTarget (which is async).
+ */
+let shDone = false;
+export function environmentSH(r: THREE.WebGLRenderer) {
+  if (shDone) return shared.envSH.value;
+  shDone = true;
+  const size = 64;
+  const rt = new THREE.WebGLCubeRenderTarget(size, { type: THREE.FloatType });
+  const cc = new THREE.CubeCamera(0.1, 100, rt);
+  const room = new RoomEnvironment();
+  const auto = r.autoClear;
+  r.autoClear = true;
+  cc.update(r, room);
+  r.autoClear = auto;
+  const sh = shared.envSH.value;
+  for (const v of sh) v.set(0, 0, 0);
+  const basis = new Array(9).fill(0);
+  const data = new Float32Array(size * size * 4);
+  const coord = new THREE.Vector3(), dir = new THREE.Vector3();
+  const flip = -1; // WebGL coordinate system
+  const pixelSize = 2 / size;
+  let total = 0;
+  for (let face = 0; face < 6; face++) {
+    r.readRenderTargetPixels(rt as unknown as THREE.WebGLRenderTarget, 0, 0, size, size, data, face);
+    for (let i = 0; i < data.length; i += 4) {
+      const px = i / 4;
+      const col = (1 - ((px % size) + 0.5) * pixelSize) * flip;
+      const row = 1 - (Math.floor(px / size) + 0.5) * pixelSize;
+      switch (face) {
+        case 0: coord.set(-1 * flip, row, col * flip); break;
+        case 1: coord.set(1 * flip, row, -col * flip); break;
+        case 2: coord.set(col, 1, -row); break;
+        case 3: coord.set(col, -1, row); break;
+        case 4: coord.set(col, row, 1); break;
+        case 5: coord.set(-col, row, -1); break;
+      }
+      const l2 = coord.lengthSq(), w = 4 / (Math.sqrt(l2) * l2);
+      total += w;
+      dir.copy(coord).normalize();
+      THREE.SphericalHarmonics3.getBasisAt(dir, basis);
+      for (let j = 0; j < 9; j++) { sh[j].x += basis[j] * data[i] * w; sh[j].y += basis[j] * data[i + 1] * w; sh[j].z += basis[j] * data[i + 2] * w; }
+    }
+  }
+  const norm = (4 * Math.PI) / total;
+  for (const v of sh) v.multiplyScalar(norm);
+  rt.dispose();
+  room.dispose?.();
+  return sh;
 }
