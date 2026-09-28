@@ -280,15 +280,17 @@ export class DocumentShot extends Shot {
     const cs = springOver(t - tCtx + 0.02, 32, 0.5);
     this.ctx.visible = ctxOn && t < tCollapse;
     this.ctx.position.z = 0.2 + (1 - cs) * 3;
-    // the rails squeeze the letters: once a rail enters a letter, the letter is
-    // compressed against it (anchored at its far edge) and never drawn past it
+    // the rails squeeze the letters: a letter's pen box is clamped to the
+    // window [xL, xR] and the glyph compressed into what is left, so a letter
+    // a rail has entered is pressed against it and never drawn past it (and
+    // nothing is left once the window has closed)
     this.ctx.glyphs.forEach((gg, i) => {
       const adv = this.ctx.advance(i);
       const x0 = this.ctx.position.x + this.ctx.baseX(i), x1 = x0 + adv; // pen box, world
-      const sR = clamp01((xR - x0) / adv), sL = clamp01((x1 - xL) / adv);
-      const sq = Math.min(sR, sL);
+      const a = Math.max(x0, xL), b = Math.min(x1, xR);
+      const sq = Math.max(0, b - a) / adv;
       gg.scale.set(sq, 1, 1);
-      gg.position.x = (sR <= sL ? x0 : x1 - sq * adv) - this.ctx.position.x;
+      gg.position.x = a - this.ctx.position.x;
       gg.visible = sq > 0.02;
     });
     // "let it try": the cursor's first output line

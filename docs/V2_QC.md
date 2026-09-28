@@ -226,3 +226,4 @@ at 960 px / 8 samples and reviewed every 4th frame.
 Cross-run determinism: frames 720, 800, 870, 950, 980 and 985 of the POC render are bit-identical
 (SHA-256 of the RGB pixels) to the same frames of the typography test, which was rendered hours earlier
 in a different browser process.
+| 23.40–23.55 (frames 1404–1413) | Seen in the 4K POC render: after the window closed, a squeezed sliver of a letter stayed beside the stroke. The squeeze only handled one rail per letter, and with both rails inside the same pen box the glyph kept half its width. | A letter's pen box is clamped to the window [xL, xR] and the glyph compressed into the remainder. One-rail cases are unchanged (bit-identical); a closed window leaves nothing. |
