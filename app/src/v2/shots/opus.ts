@@ -87,7 +87,7 @@ export class OpusShot extends Shot {
     // ---- OPUS, full width
     const Lo = layout(FONT, 'OPUS', { tracking: 10 });
     const capPx = ((1824 - 96) / Lo.width) * fontOf(FONT).kern.capHeight;
-    this.floorY = rigO.y(906);
+    this.floorY = rigO.y(862);
     floor.position.y = this.floorY - 0.001;
     this.opus = new GlyphWord('OPUS', FONT, rigO.px(capPx), porcelain(), { tracking: 10 }, { depth: 1.8, bevel: rigO.px(6) });
     this.opus.position.set(rigO.x(96), this.floorY, 0);
@@ -159,7 +159,7 @@ export class OpusShot extends Shot {
       x += w.width - unitR * (i === 0 ? 2 : 9); // one expression: no visible gaps between tokens
       this.code.push(w); g.add(w);
       // the machined block this token becomes
-      const b = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), graphite(new THREE.Color('#1d2127'), 0.62));
+      const b = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), graphite(new THREE.Color('#1d2127'), 0.88));
       b.castShadow = true; b.receiveShadow = true;
       this.blocks.push(b); g.add(b);
       const e = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), metal());
@@ -297,8 +297,9 @@ export class OpusShot extends Shot {
       b.scale.set(bwid - unitR * 3, bhei, Math.max(0.001, depth));
       b.position.set(codeBase.x + this.codeX[i] + w.width / 2 + gapClose * (i - 1.5), codeBase.y + w.capHeight / 2, codeBase.z - depth / 2 - 0.001);
       w.position.x += gapClose * (i - 1.5);
-      e.scale.set(bwid - unitR * 3, unitR * 6, Math.max(0.001, depth));
-      e.position.set(b.position.x, b.position.y + bhei / 2 + unitR * 3, b.position.z);
+      // machined lip: a thin metal edge along the front top edge only
+      e.scale.set(bwid - unitR * 3, unitR * 6, Math.max(0.001, unitR * 10 * bgrow));
+      e.position.set(b.position.x, b.position.y + bhei / 2 + unitR * 3, codeBase.z - unitR * 5);
       // status light: switches on as the verification pulse passes this block
       const led = this.leds[i];
       const ledOn = t > tEnd && (this.pulseU(t, tEnd) * 4.2 > i + 0.8);

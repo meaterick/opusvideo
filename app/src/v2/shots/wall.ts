@@ -118,7 +118,7 @@ export class WallShot extends Shot {
       const loops = glyphContours('sans100-700', p.ch, CAP, 8).map((loop) => {
         const pts = loop.map((q) => new THREE.Vector3(XL + this.live.baseX(i) + q.x, G + q.y, DEPTH + 0.004));
         pts.push(pts[0].clone());
-        const r = new Ribbon(emissive(COL.mint, 3.2), rig.px(6), undefined, loop.length + 4).setPoints(pts);
+        const r = new Ribbon(emissive(COL.mint, 2.0), rig.px(5), undefined, loop.length + 4).setPoints(pts);
         g.add(r);
         return r;
       });
@@ -274,18 +274,19 @@ export class WallShot extends Shot {
       for (const r of loops) {
         r.visible = d > 0.001;
         if (r.visible) r.draw(d);
-        (r.material as THREE.MeshBasicMaterial).color.copy(COL.mint).multiplyScalar(3.2 * flash);
+        (r.material as THREE.MeshBasicMaterial).color.copy(COL.mint).multiplyScalar(2.0 * flash);
       }
     });
     const exitU = inOutCubic(prog(t, tWhip0 - 0.04, tWhip1));
     const headS = exitU * this.current.total;
     const on = t >= tWhip0 - 0.04;
-    this.current.visible = on && t < tWhip1 + 0.45; // the exit wire hands over to the path
-    this.head.visible = on && exitU < 1;
     if (on) {
       this.current.draw(Math.max(1e-4, exitU));
       this.head.draw(Math.max(1e-4, exitU), Math.max(0, headS - 0.9) / this.current.total, rig.px(7));
     }
+    // (Ribbon.draw sets visibility, so gate it afterwards)
+    this.current.visible = this.current.visible && on && t < tWhip1 + 0.45; // the exit wire hands over to the path
+    this.head.visible = this.head.visible && on && exitU < 1;
 
     // ---------------- shot 2: path, pass, optimize
     const pathOn = t > tWhip0;
