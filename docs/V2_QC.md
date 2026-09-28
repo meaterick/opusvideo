@@ -42,4 +42,29 @@ Every defect below was found by looking at a render, then measured before it was
 
 ## Stage 1 — style frames (4K), scores
 
-(filled in below after review)
+Rendered with the fixed accumulator (auto samples: 12–36 per frame). The scores are after revision. The
+first-pass scores and their causes are in the table above; for the style frames the second pass
+changed the following:
+
+- **LIVE:** the mint halo was too wide (technical 7), so the mint was reduced to 2.0.
+- **OPTIMIZE:** a stray exit-wire stub remained (technical 7), from a visibility-after-draw bug.
+- **MULTIPLY:** 18.5 sits exactly on the ×16 → ×32 step and blended two counter states, so the
+  frame moved to 18.45.
+- **OPUS:** it sat too low (composition 7), so the baseline moved 906 → 862.
+- **BUILD:**
+  - The machine top read as a white slab. The metal was a full-depth plate; it is now a thin
+    front lip.
+  - The blocks then vanished into the dark, so the graphite was lightened.
+  - The crane framing cropped the machine; it is now computed from the machine's centre.
+
+| frame | t | comp | type | lyric | motion* | sync | story | orig | tech |
+|---|---|---|---|---|---|---|---|---|---|
+| LIVE | 12.95 | 8 | 8 | 9 | – | 9 | 8 | 8 | 8 |
+| OPTIMIZE | 14.62 | 8 | 9 | 9 | – | 8 | 8 | 8 | 8 |
+| MULTIPLY | 18.45 | 9 | 8 | 9 | – | 8 | 8 | 9 | 8 |
+| CONTEXT | 19.30 | 8 | 8 | 8 | – | 8 | 8 | 8 | 8 |
+| OPUS | 24.45 | 8 | 9 | 9 | – | 9 | 8 | 8 | 8 |
+| BUILD | 29.80 | 8 | 8 | 9 | – | 8 | 8 | 8 | 8 |
+
+\* Motion is scored on the motion tests, not on stills. Sync for a still means the state shown is the one the
+measured onset calls for at that time.

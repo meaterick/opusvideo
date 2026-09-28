@@ -159,7 +159,7 @@ export class OpusShot extends Shot {
       x += w.width - unitR * (i === 0 ? 2 : 9); // one expression: no visible gaps between tokens
       this.code.push(w); g.add(w);
       // the machined block this token becomes
-      const b = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), graphite(new THREE.Color('#1d2127'), 0.88));
+      const b = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), graphite(new THREE.Color('#3a404a'), 0.8));
       b.castShadow = true; b.receiveShadow = true;
       this.blocks.push(b); g.add(b);
       const e = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), metal());
@@ -198,8 +198,16 @@ export class OpusShot extends Shot {
     f.cam.fov = lerp(34, 44, Math.sin(Math.PI * fly));
     // "build": a crane up to a 3/4 view that shows the machine's depth
     const crane = inOutCubic(prog(t, tBuild + 0.02, tBuild + 0.6));
-    pos.add(new THREE.Vector3(3.4, 3.6, -1.2).multiplyScalar(crane));
-    look.add(new THREE.Vector3(1.4, -1.3, 0).multiplyScalar(crane));
+    if (crane > 0) {
+      // end framing computed from the machine itself: look at its centre from
+      // a fixed 3/4 offset, so the finished machine always sits in frame
+      const cb = this.R(246, 700, 0.5);
+      const mEnd = cb.x + this.codeX[3] + this.code[3].width + unitR * 50;
+      const mc = new THREE.Vector3((cb.x + mEnd) / 2 + unitR * 60, cb.y + unitR * 120, cb.z - 0.5);
+      const endPos = mc.clone().add(new THREE.Vector3(2.4, 2.1, RD * 0.95));
+      pos.lerp(endPos, crane);
+      look.lerp(mc, crane);
+    }
     f.cam.position.copy(pos);
     f.cam.lookAt(look);
     f.lightTarget.set(fly < 0.6 ? 0 : this.rc.x, fly < 0.6 ? this.floorY + 3 : this.rc.y, fly < 0.6 ? 0 : ZK);
