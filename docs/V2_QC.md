@@ -119,3 +119,10 @@ and without any single light it stayed above 55. The remainder came from terms t
 the porcelain's studio reflection and the wrap lift (a constant 0.18 × albedo). After the stop both now
 fade to ~0 with the key (key 4 %), and the ember light rises 3 → 12. The C is lit by the stroke and the
 light falls off across A-L-L into the dark: the cursor has become the light.
+
+### Stage 3c — the reasoning space (25.20–26.20)
+
+| defect | fix |
+|---|---|
+| After the fly-through the knot held completely still, ~0.4 s of dead frame in the chorus. It read as a generic scribble. | Signal pulses run along every path and advance one step per beat (an outExpo step, then stillness), and the knot turns slowly (0.12 rad/s) for parallax. The pulses are denser and paler, not glowing (they stay under the halation threshold; glow stays reserved for the cursor and verification). The taut "reason" path is now sampled in knot space, so it leaves the rotated knot without a pop. |
+| The floor's horizon crossed the middle of the knot. | The floor dissolves as the camera enters the O (fly 0.45–0.8), so the reasoning space is a void. The machine later stands on its own workbench. |

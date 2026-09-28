@@ -109,12 +109,20 @@ export function flat(color: THREE.Color, opacity = 1) {
 /** Translucent reasoning material for tubes: fresnel edges, additive. */
 export function reasoning(intensity = 0.7) {
   return new THREE.ShaderMaterial({
-    uniforms: { color: { value: COL.reasoning.clone() }, intensity: { value: intensity }, opacity: { value: 1 } },
-    vertexShader: `varying vec3 vN; varying vec3 vV;
-      void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); gl_Position = projectionMatrix * mv; }`,
-    fragmentShader: `uniform vec3 color; uniform float intensity; uniform float opacity; varying vec3 vN; varying vec3 vV;
+    // flowPhase / flowAmt: signal pulses travelling along the path (uv.x runs
+    // along a TubeGeometry); the shot advances the phase on the beat grid
+    uniforms: { color: { value: COL.reasoning.clone() }, intensity: { value: intensity }, opacity: { value: 1 }, flowPhase: { value: 0 }, flowAmt: { value: 0 } },
+    vertexShader: `varying vec3 vN; varying vec3 vV; varying float vU;
+      void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0); vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz); vU = uv.x; gl_Position = projectionMatrix * mv; }`,
+    fragmentShader: `uniform vec3 color; uniform float intensity; uniform float opacity; uniform float flowPhase; uniform float flowAmt;
+      varying vec3 vN; varying vec3 vV; varying float vU;
       void main(){ float f = pow(1.0 - abs(dot(normalize(vN), normalize(vV))), 2.0);
-        float a = (0.18 + 0.82 * f) * opacity; gl_FragColor = vec4(color * intensity * a, a); }`,
+        float d = fract(vU * 3.0 - flowPhase); d = min(d, 1.0 - d);
+        float pulse = exp(-d * d * 700.0) * flowAmt;
+        // a pulse is denser and paler, not a glow (stays under the halation threshold)
+        float a = (0.18 + 0.82 * f + 0.55 * pulse) * opacity;
+        vec3 c = mix(color, vec3(0.72, 0.86, 1.0), 0.45 * pulse);
+        gl_FragColor = vec4(c * intensity * a * (1.0 + 1.0 * pulse), a); }`,
     transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
   });
 }

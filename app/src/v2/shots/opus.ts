@@ -23,7 +23,7 @@ import { Ribbon } from '../lines';
 import { Cursor2, blink2 } from '../cursor';
 import { Rig } from '../rig';
 import { typeTimes, reveal, caretAfter } from './common';
-import { inExpo, inOutCubic, lerp, outExpo, prog, recoil, spring, springOver } from '../motion';
+import { clamp01, inExpo, inOutCubic, lerp, outExpo, prog, recoil, spring, springOver } from '../motion';
 
 const FONT = 'sans75-700' as const;
 const rigO = new Rig(34, 16);          // OPUS camera
@@ -52,7 +52,8 @@ export class OpusShot extends Shot {
   private rc = new THREE.Vector3();         // reasoning frame centre (world)
   private knot = new THREE.Group();
   private tubes: THREE.Mesh<THREE.TubeGeometry, THREE.ShaderMaterial>[] = [];
-  private reasonPts: THREE.Vector3[] = [];
+  private reasonPts: THREE.Vector3[] = [];  // the taut path's points in knot space
+  private floor!: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshStandardMaterial>;
   private reasonPath!: Ribbon;
   private give!: GlyphWord; private giveTimes: number[] = [];
   private diff!: GlyphWord;
@@ -79,7 +80,8 @@ export class OpusShot extends Shot {
     const g = this.group;
     g.add(this.lighting);
     this.lighting.keyDist = 30;
-    const floor = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), graphite(new THREE.Color('#1c1f25'), 0.9));
+    const floor = this.floor = new THREE.Mesh(new THREE.PlaneGeometry(400, 400), graphite(new THREE.Color('#1c1f25'), 0.9));
+    floor.material.transparent = true;
     floor.rotation.x = -Math.PI / 2;
     floor.receiveShadow = true;
     g.add(floor);
@@ -113,8 +115,7 @@ export class OpusShot extends Shot {
       if (i === 1) {
         // the path that will be pulled taut: sample it in world space
         tube.updateMatrix();
-        const m4 = new THREE.Matrix4().makeTranslation(this.rc.x, this.rc.y, this.rc.z).multiply(tube.matrix);
-        for (let k = 0; k <= 160; k++) this.reasonPts.push(curve.getPoint(k / 160).applyMatrix4(m4));
+        for (let k = 0; k <= 160; k++) this.reasonPts.push(curve.getPoint(k / 160).applyMatrix4(tube.matrix));
       }
     });
     this.reasonPath = new Ribbon(new THREE.MeshBasicMaterial({ color: COL.reasoning.clone().multiplyScalar(1.3), toneMapped: false, transparent: true, opacity: 0.9, blending: THREE.AdditiveBlending, depthWrite: false }), unitR * 6, undefined, 200);
@@ -232,6 +233,21 @@ export class OpusShot extends Shot {
     // ---------------- the knot: revealed only after OPUS (paths draw in)
     const reveal0 = outExpo(prog(t, tBand, tFly1));
     this.knot.visible = t > tBand;
+    // the problem is turned over slowly (parallax through the paths) and
+    // signal pulses run along every path, one step per beat
+    this.knot.rotation.y = 0.12 * Math.max(0, t - tBand);
+    this.knot.updateMatrix();
+    const flowAmt = outExpo(prog(t, tFly1 - 0.2, tFly1 + 0.3));
+    this.tubes.forEach((tube, i) => {
+      const u = tube.material.uniforms;
+      u.flowAmt.value = flowAmt;
+      // advance on the beat: a fast outExpo step at each beat, then stillness
+      const b = bp - m.beat(tBand), k = Math.floor(b), fr = b - k;
+      u.flowPhase.value = (k + outExpo(clamp01(fr * 3))) * 0.25 + i * 0.37;
+    });
+    // the floor dissolves as the camera enters the O: no horizon crosses the knot
+    this.floor.material.opacity = 1 - inOutCubic(prog(fly, 0.45, 0.8));
+    this.floor.visible = this.floor.material.opacity > 0.001;
     const straightened = spring(t - tReason, 18);
     this.tubes.forEach((tube, i) => {
       tube.material.uniforms.opacity.value = reveal0 * (t > tReason ? lerp(1, 0.35, outExpo(prog(t, tReason, tReason + 0.6))) : 1) * (i === 1 && t > tReason ? 0 : 1);
@@ -271,10 +287,11 @@ export class OpusShot extends Shot {
 
     // ---------------- shot 9: the path pulled taut, verbs on the line, code, machine
     const lineY = this.R(960, 600).y, lx0 = this.R(246, 600).x, lx1 = this.R(1674, 600).x;
+    const knotPts = this.reasonPts.map((p) => p.clone().applyMatrix4(this.knot.matrix));
     const straight = this.reasonPts.map((_, k) => new THREE.Vector3(lerp(lx0, lx1, k / (this.reasonPts.length - 1)), lineY, ZK + 0.3));
     this.reasonPath.visible = t > tReason - 0.01;
     if (this.reasonPath.visible) {
-      this.reasonPath.setPoints(this.reasonPts.map((p, k) => p.clone().lerp(straight[k], straightened))).draw(1);
+      this.reasonPath.setPoints(knotPts.map((p, k) => p.clone().lerp(straight[k], straightened))).draw(1);
     }
     const li = reveal(this.itCan, t, this.itCanTimes);
     this.itCan.visible = t > tIt - 0.05 && crane < 0.02;
